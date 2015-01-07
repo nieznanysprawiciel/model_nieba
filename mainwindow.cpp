@@ -1,0 +1,137 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QFileDialog>
+
+#define SIZE_X  900
+#define SIZE_Y  660
+
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    setWindowTitle("Modelowanie nieba w różnych warunkach pogodowych");
+
+    sky_display = new QtSkyDisplay(SIZE_X,SIZE_Y,ui->time_of_execution);
+    drawing_area = new DrawingArea(sky_display, SIZE_X, SIZE_Y, this);
+	ui->scrollDrawingArea->setWidget(drawing_area);
+    repaint_timer.setInterval(1000);
+    repaint_timer.stop();       //pewnie to zbędne
+
+    //slidery
+    connect(ui->slider_red,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+    connect(ui->slider_green,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+    connect(ui->slider_blue,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->sky_intensity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->solar_intensity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->slider_solar_elevation,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->slider_view_angle,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+    //spinboxy
+    connect(ui->SpinBox_red,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+    connect(ui->SpinBox_green,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+    connect(ui->SpinBox_blue,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->sky_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->solar_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_solar_elevation,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_view_angle,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	//actions
+	connect(ui->actionZapisz_obraz,SIGNAL(triggered()),this,SLOT(save_file()));
+    //zakończenie generowania nieba
+    connect(sky_display,SIGNAL(sky_completed()),this,SLOT(generation_ended()));
+    //timer odświeżający widok w trakcie generowania
+    connect(&repaint_timer, SIGNAL(timeout()),this, SLOT(repaint_sky()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+    delete drawing_area;
+    delete sky_display;
+}
+
+void MainWindow::value_changed(double value)
+{
+	int ret_value = (int)(value*100);
+
+    if( sender() == ui->SpinBox_red )
+		ui->slider_red->setValue(ret_value);
+	else if( sender() == ui->SpinBox_green )
+		ui->slider_green->setValue(ret_value);
+	else if( sender() == ui->SpinBox_blue )
+		ui->slider_blue->setValue(ret_value);
+	else if( sender() == ui->sky_intensity_spinbox )
+		ui->sky_intensity->setValue(ret_value);
+	else if( sender() == ui->solar_intensity_spinbox )
+		ui->solar_intensity->setValue(ret_value);
+	else if( sender() == ui->SpinBox_view_angle )
+		ui->slider_view_angle->setValue(ret_value);
+	else if( sender() == ui->SpinBox_solar_elevation )
+		ui->slider_solar_elevation->setValue(ret_value);
+}
+
+void MainWindow::value_changed(int value)
+{
+	double ret_value = (double)value/(double)100;
+
+    if( sender() == ui->slider_red )
+		ui->SpinBox_red->setValue(ret_value);
+	else if( sender() == ui->slider_green )
+		ui->SpinBox_green->setValue(ret_value);
+	else if( sender() == ui->slider_blue )
+		ui->SpinBox_blue->setValue(ret_value);
+	else if( sender() == ui->sky_intensity )
+		ui->sky_intensity_spinbox->setValue(ret_value);
+	else if( sender() == ui->solar_intensity )
+		ui->solar_intensity_spinbox->setValue(ret_value);
+	else if( sender() == ui->slider_view_angle )
+		ui->SpinBox_view_angle->setValue(ret_value);
+	else if( sender() == ui->slider_solar_elevation )
+		ui->SpinBox_solar_elevation->setValue(ret_value);
+}
+
+void MainWindow::on_generate_clicked()
+{
+	sky_display->set_sky_intensity((float)ui->sky_intensity_spinbox->value());
+	sky_display->set_solar_intensity((float)ui->solar_intensity_spinbox->value());
+	sky_display->set_solar_elevation((float)ui->SpinBox_solar_elevation->value());
+
+	if( ui->dithering->isChecked() )
+		sky_display->set_dithering(ui->spinBox_dithering->value());
+	else
+		sky_display->set_dithering(0);
+
+    ui->generate->setEnabled(false);
+    repaint_timer.start();
+
+	drawing_area->generate_sky(ui->sky_width->value(),
+							   ui->sky_height->value(),
+							   ui->SpinBox_view_angle->value(),
+							   ui->SpinBox_red->value(),
+							   ui->SpinBox_green->value(),
+							   ui->SpinBox_blue->value(),
+							   ui->horizontalSlider_rotation->value(),
+							   ui->verticalSlider_rotation->value(),
+							   ui->slider_turbidity->value());
+}
+
+void MainWindow::save_file()
+{
+		QString name = QFileDialog::getSaveFileName(this, tr("Save File"),
+													"",
+													tr("Images (*.png *.bmp *.jpg)"));
+		sky_display->save_image(name);
+}
+
+void MainWindow::generation_ended()
+{
+    repaint_timer.stop();
+    drawing_area->repaint();
+    ui->generate->setEnabled(true);
+}
+
+//Odmalowujemy okno w trakcie generowania nieba, żeby użytkownik widział postęp.
+void MainWindow::repaint_sky()
+{
+    drawing_area->repaint();
+}

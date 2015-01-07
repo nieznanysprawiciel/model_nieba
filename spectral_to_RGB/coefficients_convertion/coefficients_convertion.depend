@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1416587906 source:e:\programy\model_nieba\spectral_to_rgb\coefficients_convertion\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"..\..\HosekWilkie_SkylightModel_C_Source.1.4a\ArHosekSkyModelData_Spectral.h"
+	"CIEXYZ_distribution.h"
+
+1361556976 e:\programy\model_nieba\hosekwilkie_skylightmodel_c_source.1.4a\arhosekskymodeldata_spectral.h
+
+1416590096 e:\programy\model_nieba\spectral_to_rgb\coefficients_convertion\ciexyz_distribution.h
+
+1417278242 source:e:\programyqt\model_nieba\model_nieba\spectral_to_rgb\coefficients_convertion\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"..\..\HosekWilkie_SkylightModel_C_Source.1.4a\ArHosekSkyModelData_Spectral.h"
+	"CIEXYZ_distribution.h"
+
+1361556976 e:\programyqt\model_nieba\model_nieba\hosekwilkie_skylightmodel_c_source.1.4a\arhosekskymodeldata_spectral.h
+
+1417352902 e:\programyqt\model_nieba\model_nieba\spectral_to_rgb\coefficients_convertion\ciexyz_distribution.h
+
