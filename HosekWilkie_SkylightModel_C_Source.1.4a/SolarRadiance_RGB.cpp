@@ -88,6 +88,10 @@ double solar_radiance_RGB(
 		&& state->turbidity <= 10.0
 		);
 
+    //Jeżeli jesteśmy poza tarcza słoneczną, to zwracamy czarny kolor
+    if( gamma > state->solar_radius )
+        return 0.0;
+
 
 	int     turb_low  = (int) state->turbidity - 1;
 	double  turb_frac = state->turbidity - (double) (turb_low + 1);
@@ -158,7 +162,7 @@ double solar_radiance_RGB(
 
 	direct_radiance *= darkeningFactor;
 
-	return direct_radiance/6000;
+    return direct_radiance/1024;
 }
 
 
