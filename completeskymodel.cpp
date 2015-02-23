@@ -35,6 +35,10 @@ CompleteSkyModel::CompleteSkyModel(int Version, int channels)
 
 	sky_intensity = 1.0;
 	solar_intensity = 1.0;
+
+    R16_buffer = NULL;
+    G16_buffer = NULL;
+    B16_buffer = NULL;
 }
 
 
@@ -43,10 +47,18 @@ CompleteSkyModel::~CompleteSkyModel()
     clear_HosekWilkie_model();
     delete[] skymodel_state;
     delete[] albedo;
+
+    if( R16_buffer )
+        delete[] R16_buffer;
+    if( G16_buffer )
+        delete[] G16_buffer;
+    if( B16_buffer )
+        delete[] B16_buffer;
+
 }
 
 
-/*inicjujemy model
+/**inicjujemy model
     funkcja inicjuje wszystkie wartości konieczne, do działania modelu
     za pierwszym razem nalezy zawsze wywołać funkcję z pełnym zestawem argumentów
     kolejne wywołania moga modyfikować tylko niektóre parametry
@@ -81,7 +93,7 @@ void CompleteSkyModel::init(int* buffer, int screen_sizeX,
     init_HosekWilkie_model(sun_elevation);
 }
 
-//patrz:    opis funkcji CompleteSkyModel::init
+///patrz:    opis funkcji CompleteSkyModel::init
 void CompleteSkyModel::init(int* buffer, int screen_sizeX,
                             int screen_sizeY, int near_plane,
                             double *albedo_table, double turbid,
@@ -99,7 +111,7 @@ void CompleteSkyModel::init(int* buffer, int screen_sizeX,
     init_HosekWilkie_model(sun_elevation);
 }
 
-//patrz:    opis funkcji CompleteSkyModel::init
+///patrz:    opis funkcji CompleteSkyModel::init
 void CompleteSkyModel::init(int* buffer, int screen_sizeX,
                                          int screen_sizeY, int near_plane,
                                          double *albedo_table, double turbid,
@@ -123,6 +135,17 @@ void CompleteSkyModel::init(int* buffer, int screen_sizeX,
 */
 void CompleteSkyModel::set_screen( int screen_sizeX, int screen_sizeY, int near_plane )
 {
+    if( screenX != screen_sizeX || screenY != screen_sizeY)
+    {
+        delete[] R16_buffer;
+        delete[] G16_buffer;
+        delete[] B16_buffer;
+
+        R16_buffer = new unsigned short[screen_sizeX * screen_sizeY];
+        G16_buffer = new unsigned short[screen_sizeX * screen_sizeY];
+        B16_buffer = new unsigned short[screen_sizeX * screen_sizeY];
+    }
+
     screenX = screen_sizeX;
     screenY = screen_sizeY;
     screen_near_plane = near_plane;
@@ -161,7 +184,7 @@ void CompleteSkyModel::set_solar_intensity(float intensity)
 //                  funkcje rysujące niebo do bufora                     //
 //-----------------------------------------------------------------------//
 
-/* funkcje dostają w parametrze kwaternion odpowiadający obrotowi
+/** funkcje dostają w parametrze kwaternion odpowiadający obrotowi
  * domyślnego ustawienia ekranu do nowej pozyji, czyli wektora
  * [0,0,-1]
  *
@@ -182,14 +205,10 @@ int* CompleteSkyModel::execute(quat & screen_rot)
 
     screen_rotation = screen_rot;
 
-    //init_HosekWilkie_model(sun_elevation);
-
     if( version == VERSION_RGB || version == VERSION_XYZ )
         generate_sky_RGB_XYZ();
     else if( version == VERSION_SPECTRAL )
         generate_sky_spectral();
-
-    //clear_HosekWilkie_model();
 
     return color_buffer;
 }
@@ -294,6 +313,9 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 		G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
 		B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
+        R16_buffer[i] = make_16bit( R );
+        G16_buffer[i] = make_16bit( G );
+        B16_buffer[i] = make_16bit( B );
         color_buffer[i] = make_RGB(R,G,B);
     }
 
@@ -316,7 +338,7 @@ void CompleteSkyModel::calculate_sun_elevation()
     sun_elevation = radians(90.0) - sun_elevation;
 }
 
-/*oblicza przekztałcone wektory:
+/**oblicza przekztałcone wektory:
  * - kroku i jeden piksel horyzontalnie
  * - kroku o jeden piksel pionowo
  * - lewego górnego rogu ekranu
@@ -419,6 +441,16 @@ unsigned int CompleteSkyModel::make_RGB(double &R, double &G, double &B)
     return pix_color;
 }
 
+unsigned short CompleteSkyModel::make_16bit(double& color)
+{
+    // Najpierw przycinamy kolor do 255
+    if( color > 255)
+        color = 255;
+
+    // Skalujemy kolor, żeby poszerzyc jego zakres
+    unsigned short result = (unsigned short)((double)255 * color);
+    return result;
+}
 
 //==================================================================//
 //  multithreading
@@ -485,6 +517,9 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
         G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
         B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
+        R16_buffer[i] = make_16bit( R );
+        G16_buffer[i] = make_16bit( G );
+        B16_buffer[i] = make_16bit( B );
         color_buffer[i] = make_RGB(R,G,B);
     }
 }

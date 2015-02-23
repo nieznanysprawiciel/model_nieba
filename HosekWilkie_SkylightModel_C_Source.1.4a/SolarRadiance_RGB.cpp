@@ -162,7 +162,7 @@ double solar_radiance_RGB(
 
 	direct_radiance *= darkeningFactor;
 
-    return direct_radiance/1024;
+    return direct_radiance;
 }
 
 

@@ -111,7 +111,11 @@ void QtSkyDisplay::end_thread()
     for(int i = 0; i < ideal_threads; ++i)
         delete threads[i];
 
-    dithering();
+	unsigned short* R = sky_model->get_R16_buffer();
+	unsigned short* G = sky_model->get_G16_buffer();
+	unsigned short* B = sky_model->get_B16_buffer();
+	dithering(R, G, B);
+	copy_from_16bit(R, G, B);
     //random_noise();
 
     time_of_execution->setText( QString::number(time_elapsed) );
@@ -170,7 +174,11 @@ void QtSkyDisplay::set_solar_intensity(float intensity)
 
 void QtSkyDisplay::set_dithering(int level)
 {
-	dithering_level = level;
+	//dithering_level = level;
+	if( level != 0 )
+		dithering_level = 255;		// Przekształcamy obrazek z 16 bit na kanał do RGB
+	else
+		dithering_level = 0;
 }
 
 void QtSkyDisplay::save_image(QString& file_name)
@@ -188,7 +196,7 @@ void QtSkyDisplay::set_solar_elevation(float elevation)
 	sun.z = -glm::cos(rad_elevation);
 }
 
-/*Używa algorytmu Floyda-Steinberga do obrazka.
+/**Używa algorytmu Floyda-Steinberga do obrazka.
 Aby włączyć dithering trzeba ustawić zmienną dithering_level
 na wartość większą niż 1.
 Zmienna ta oznacza jaka będzie przerwa między dopuszczalnymi
@@ -227,8 +235,8 @@ void QtSkyDisplay::dithering()
 				int pix = pixel & (mask << shift);	//wydobywamy składową
 				pix = pix >> shift;					//przesuwamy ją do zakresu 0-255
 				float fpix = (float)pix + error_table[hor];	//konwertujemy na float i dodajemy błąd
-				float pix_error;
 
+				float pix_error;
 				pix_error = fmod(fpix, (float)dithering_level);	//liczymy błąd
 				if( pix_error < (float)dithering_level/(float)2)
 					pix = (int)(fpix - pix_error);
@@ -270,6 +278,116 @@ void QtSkyDisplay::dithering()
 
 
 	delete [] error_table;
+}
+
+/**@brief Dithering z użyciem tablic o zwiększonym zakresie kolorów.
+
+
+*/
+void QtSkyDisplay::dithering(unsigned short* R, unsigned short* G, unsigned short* B)
+{
+	if( dithering_level < 2 )	//nie mamy co robić
+		return;
+
+	int vert_pix = sky_data.vertical_pixels;
+	int hor_pix = sky_data.horizontal_pixels;
+
+	//Będziemy przetwarzać piksele w poziomie. Błędy propagują się
+	//najdalej o jeden piksel w związku z czym potrzebujemy tablicy,
+	//która pomieści dwa wiersze obrazka
+	float* error_table = new float[hor_pix<<1];
+	unsigned short* color_buff = NULL;
+
+	for( int j = 0; j < 3; ++j )
+	{   // Iterujemy po kanałach
+		if( j == 0 )
+			color_buff = R;
+		else if( j == 1 )
+			color_buff = G;
+		else
+			color_buff = B;
+
+		for( int i=0; i < hor_pix*2; ++i )
+			error_table[i] = 0;		//zerujemy pamięć
+
+		for( int vert = 0; vert < vert_pix; ++vert )
+		{//przechodzimy obrazek w pionie
+
+			for( int hor = 0; hor < hor_pix; ++hor )
+			{//przechodzimy obrazek w poziomie
+				short pixel = color_buff[vert*hor_pix + hor];		//pobieramy piksel
+				float fpix = (float)pixel + error_table[hor];	//konwertujemy na float i dodajemy błąd
+
+				int pix;
+				float pix_error;
+				pix_error = fmod(fpix, (float)dithering_level);	//liczymy błąd
+				if( pix_error < (float)dithering_level/(float)2)
+					pix = (int)(fpix - pix_error);
+				else
+					pix = (int)(fpix - pix_error + dithering_level),
+					pix_error -= dithering_level;
+
+				if( pix > 0xFFFF )
+				{//jeżeli wartość wyszła poza zakres, to obcinamy
+				//a to co zostanie propagujemy razem z błędem
+					pix_error += pix - 0xFFFF;
+					pix = 0xFFFF;
+				}
+
+								//dodajemy błąd do tabeli z odpowiednimi wagami
+				error_table[hor_pix + hor] += (float)5*pix_error/(float)16;
+				//na brzegach obrazka błędy po prostu olewamy
+				if( hor != 0 )
+					error_table[hor_pix + hor - 1] += (float)3*pix_error/(float)16;
+				if( hor != hor_pix - 1)
+				{
+					error_table[hor + 1] += (float)7*pix_error/(float)16;
+					error_table[hor_pix + hor + 1] += pix_error/(float)16;
+				}
+
+				color_buff[vert*hor_pix + hor] = pix;	//wstawiamy do pamięci
+
+			}
+			//przenosimy roboczy wiersz tabeli do góry, a dolny wiersz zerujemy
+			for( int i = 0; i < hor_pix; ++i )
+				error_table[i] = error_table[hor_pix + i], error_table[hor_pix + i] = 0;
+		}
+	}
+
+	delete [] error_table;
+}
+
+/**
+   @brief QtSkyDisplay::copy_from_16bit przekształca tablicę ze składowymi 16 bitowymi
+   na format RGB i wstawia do tablicy w zmiennej color_buffer.
+   @param R Tablica z barwą czerwoną.
+   @param G Tablica z barwą zieloną.
+   @param B Tablica z barwą niebieską.
+ */
+void QtSkyDisplay::copy_from_16bit(unsigned short* R, unsigned short* G, unsigned short* B)
+{
+	// Jeżeli nie robiliśmy ditheringu, to nie ma po co
+	if( dithering_level < 2 )
+		return;
+
+	int vert_pix = sky_data.vertical_pixels;
+	int hor_pix = sky_data.horizontal_pixels;
+
+	for( int vert = 0; vert < vert_pix; ++vert )
+	{//przechodzimy obrazek w pionie
+
+		for( int hor = 0; hor < hor_pix; ++hor )
+		{//przechodzimy obrazek w poziomie
+			// Skalujemy do 8 bitów na kanał
+			int RED = R[vert*hor_pix + hor] / 255;
+			int GREEN = G[vert*hor_pix + hor] / 255;
+			int BLUE = B[vert*hor_pix + hor] / 255;
+
+			int pixel = (RED << 16) | (GREEN << 8) | BLUE;
+
+			color_buffer[vert*hor_pix + hor] = pixel;	//wstawiamy do pamięci
+		}
+	}
 }
 
 void QtSkyDisplay::random_noise()

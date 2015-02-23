@@ -90,18 +90,26 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_solar_elevation->setValue(ret_value);
 }
 
+/**@brief Funkcja wykonywana w reakcji na wciśnięcie przycisku do generowania nieba.
+
+Funkcja pobiera parametry z odpowiednich kontrolek i przekazuje do klasy QtSkyDisplay.
+Przycisk do generowania nieba jest blokowany do zakończenia operacji. Wyniki generowania
+pojawiają się na bierząco na ekranie dzięki timerowi, który jest uruchamiany i cyklicznie
+odświeża okno do momentu zakończenia.
+*/
 void MainWindow::on_generate_clicked()
 {
+    ui->generate->setEnabled(false);
+
 	sky_display->set_sky_intensity((float)ui->sky_intensity_spinbox->value());
 	sky_display->set_solar_intensity((float)ui->solar_intensity_spinbox->value());
 	sky_display->set_solar_elevation((float)ui->SpinBox_solar_elevation->value());
 
 	if( ui->dithering->isChecked() )
-		sky_display->set_dithering(ui->spinBox_dithering->value());
+		sky_display->set_dithering(1);
 	else
 		sky_display->set_dithering(0);
 
-    ui->generate->setEnabled(false);
     repaint_timer.start();
 
 	drawing_area->generate_sky(ui->sky_width->value(),
@@ -123,6 +131,9 @@ void MainWindow::save_file()
 		sky_display->save_image(name);
 }
 
+/**@brief Funkcja wywoływana po zakończeniu generowania. Zatrzymuje timer
+i odświeża obszar rysowania.
+*/
 void MainWindow::generation_ended()
 {
     repaint_timer.stop();
@@ -130,7 +141,8 @@ void MainWindow::generation_ended()
     ui->generate->setEnabled(true);
 }
 
-//Odmalowujemy okno w trakcie generowania nieba, żeby użytkownik widział postęp.
+/**@brief Odmalowujemy okno w trakcie generowania nieba, żeby użytkownik widział postęp.
+*/
 void MainWindow::repaint_sky()
 {
     drawing_area->repaint();

@@ -20,7 +20,10 @@ using namespace glm;
 class CompleteSkyModel
 {
 private:
-	int*    color_buffer;	//bufor, w którym znajdzie się wynik
+    int*    color_buffer;	///<Bufor, w którym znajdzie się wynik
+    unsigned short*  R16_buffer;     ///<Bufor dla koloru czerwonego w formacie float
+    unsigned short*  G16_buffer;     ///<Bufor dla koloru zielonego w formacie float
+    unsigned short*  B16_buffer;     ///<Bufor dla koloru niebieskiego w formacie float
 
     int     screenX;
     int     screenY;
@@ -70,6 +73,9 @@ public:
     int* execute(int offset, int max ); //do wielowątkowego wykonania
     //int* execute( quat & screen_rot, vec3 &sun );
     //int* execute(quat & screen_rot, vec3 &sun, vec3 &zenith );
+    inline unsigned short* get_R16_buffer() { return R16_buffer; }
+    inline unsigned short* get_G16_buffer() { return G16_buffer; }
+    inline unsigned short* get_B16_buffer() { return B16_buffer; }
 
 private:        //funkcje pomocnicze
     void init_HosekWilkie_model(double solarElevation);
@@ -87,6 +93,7 @@ private:        //funkcje pomocnicze
                      vec3 & top_left_corner, double& theta, double& gamma,
                      int & currentX, int & currentY);
     unsigned int make_RGB(double& R, double& G, double& B);
+    unsigned short make_16bit(double& color);
 
     void set_albedo( double* albedo_table );
     void set_turbidity( double new_turbidity );

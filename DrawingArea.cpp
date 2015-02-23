@@ -24,7 +24,7 @@ void DrawingArea::generate_sky(int pixX, int pixY, float view_radius,
 							vertical_angle, turbid);
 
     sky_display->sky_display_multithreads();    //wersja wielowątkowa
-    //sky_display->sky_display();       //wersja jednowątkowa
+    //sky_display->sky_display();               //wersja jednowątkowa
 	repaint();			//musimy odświerzyć zawartość widgetu
 }
 
@@ -34,8 +34,5 @@ void DrawingArea::paintEvent(QPaintEvent *event)
 	Q_UNUSED(event);
 
     QPainter painter(this);
-    /*painter.setPen(Qt::blue);
-    painter.setFont(QFont("Arial", 30));
-    painter.drawText(rect(), Qt::AlignCenter, "Qt");*/
     sky_display->paint_event(&painter);
 }

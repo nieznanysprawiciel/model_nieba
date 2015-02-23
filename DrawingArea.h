@@ -4,6 +4,11 @@
 #include <QWidget>
 #include "QtSkyDisplay.h"
 
+/**
+   @brief Klasa DrawingArea jest widgetem, na którym zostanie narysowane niebo.
+
+
+ */
 class DrawingArea : public QWidget
 {
     Q_OBJECT

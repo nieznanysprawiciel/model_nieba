@@ -25,6 +25,8 @@ public:
 	void save_image(QString& file_name);
     void paint_event(QPainter* painter);
 	void dithering();
+	void dithering(unsigned short* R, unsigned short* G, unsigned short* B);
+	void copy_from_16bit(unsigned short* R, unsigned short* G, unsigned short* B);
     void random_noise();
 
     void set_params(int pixX, int pixY, float view_angle,
