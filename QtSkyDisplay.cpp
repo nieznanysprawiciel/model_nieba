@@ -16,9 +16,9 @@ QtSkyDisplay::QtSkyDisplay(int pixX, int pixY, QLabel *time)
     sky_data.vertical_pixels    =   pixY;
     sky_data.near_plane         =   pixX;
 
-    albiedo[0] = 0.8;
-    albiedo[1] = 0.8;
-    albiedo[2] = 0.8;
+	albiedo[0] = 0.8;
+	albiedo[1] = 0.8;
+	albiedo[2] = 0.8;
 
     turbidity = 1;
 	dithering_level = 0;
@@ -32,7 +32,7 @@ QtSkyDisplay::QtSkyDisplay(int pixX, int pixY, QLabel *time)
         color_buffer[i] = 0xFFFFFFFF;
 
     sky_model = new CompleteSkyModel(VERSION_RGB, 3);
-    sky_model->init(color_buffer, pixX, pixY, pixX, albiedo, turbidity, zenith, sun);
+	sky_model->init(color_buffer, pixX, pixY, pixX, albiedo, turbidity, zenith, sun);
 }
 
 QtSkyDisplay::~QtSkyDisplay()

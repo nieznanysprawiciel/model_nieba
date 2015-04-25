@@ -13,9 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Modelowanie nieba w różnych warunkach pogodowych");
 
-    sky_display = new QtSkyDisplay(SIZE_X,SIZE_Y,ui->time_of_execution);
-    drawing_area = new DrawingArea(sky_display, SIZE_X, SIZE_Y, this);
-	ui->scrollDrawingArea->setWidget(drawing_area);
+	sky_display = new SkyDisplayer( SIZE_X,SIZE_Y, this );
+	//drawing_area = new DrawingArea(sky_display, SIZE_X, SIZE_Y, this);
+	ui->scrollDrawingArea->setWidget(sky_display);
     repaint_timer.setInterval(1000);
     repaint_timer.stop();       //pewnie to zbędne
 
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete drawing_area;
+	//delete drawing_area;
     delete sky_display;
 }
 
@@ -112,7 +112,7 @@ void MainWindow::on_generate_clicked()
 
     repaint_timer.start();
 
-	drawing_area->generate_sky(ui->sky_width->value(),
+	sky_display->generate_sky(ui->sky_width->value(),
 							   ui->sky_height->value(),
 							   ui->SpinBox_view_angle->value(),
 							   ui->SpinBox_red->value(),
@@ -125,10 +125,10 @@ void MainWindow::on_generate_clicked()
 
 void MainWindow::save_file()
 {
-		QString name = QFileDialog::getSaveFileName(this, tr("Save File"),
+	QString name = QFileDialog::getSaveFileName(this, tr("Save File"),
 													"",
 													tr("Images (*.png *.bmp *.jpg)"));
-		sky_display->save_image(name);
+	sky_display->save_image(name);
 }
 
 /**@brief Funkcja wywoływana po zakończeniu generowania. Zatrzymuje timer
@@ -137,7 +137,7 @@ i odświeża obszar rysowania.
 void MainWindow::generation_ended()
 {
     repaint_timer.stop();
-    drawing_area->repaint();
+	sky_display->repaint();
     ui->generate->setEnabled(true);
 }
 
@@ -145,5 +145,5 @@ void MainWindow::generation_ended()
 */
 void MainWindow::repaint_sky()
 {
-    drawing_area->repaint();
+	sky_display->repaint();
 }

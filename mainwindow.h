@@ -2,9 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "DrawingArea.h"
-#include "QtSkyDisplay.h"
+//#include "DrawingArea.h"
+//#include "QtSkyDisplay.h"
 #include <QTimer>
+#include "skydisplayer.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +21,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    DrawingArea* drawing_area;
-    QtSkyDisplay* sky_display;
+	//DrawingArea* drawing_area;
+	SkyDisplayer* sky_display;
     QTimer repaint_timer;
 
 public slots:
