@@ -23,7 +23,6 @@ private:
     Ui::MainWindow *ui;
 	//DrawingArea* drawing_area;
 	SkyDisplayer* sky_display;
-    QTimer repaint_timer;
 
 public slots:
     void value_changed(double);
@@ -31,7 +30,6 @@ public slots:
 private slots:
     void on_generate_clicked();
     void generation_ended();
-    void repaint_sky();
 	void save_file();
 };
 

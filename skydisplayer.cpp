@@ -34,13 +34,18 @@ SkyDisplayer::SkyDisplayer( int sizeX, int sizeY, QWidget *parent ) :
 	sky_model->init(color_buffer, sizeX, sizeY, sizeX,
 					sky_data.albedo, sky_data.turbidity,
 					zenith, sun_vector);
+
+	repaint_timer.setInterval(1000);
+	repaint_timer.stop();       //pewnie to zbędne
+	//timer odświeżający widok w trakcie generowania
+	connect(&repaint_timer, SIGNAL(timeout()),this, SLOT(repaint()));
 }
 
 
 void SkyDisplayer::generate_sky(int pixX, int pixY, float view_angle,
 							   double albiedoR, double albiedoG,
 							   double albiedoB, float horizontal_angle,
-							   float vertical_angle, int turbid)
+							   float vertical_angle, float turbid)
 {
 	//zmieniamy rozmiar widgetu, jeżeli zmienił się żądany rozmiar obrazka
 	if( QSize(pixX, pixY) != size () )
@@ -51,6 +56,7 @@ void SkyDisplayer::generate_sky(int pixX, int pixY, float view_angle,
 				albiedoB, horizontal_angle,
 				vertical_angle, turbid);
 
+	repaint_timer.start();
 	sky_display_multithreads();    //wersja wielowątkowa
 	//sky_display();               //wersja jednowątkowa
 	repaint();			//musimy odświerzyć zawartość widgetu
@@ -74,7 +80,7 @@ void SkyDisplayer::paintEvent(QPaintEvent *event)
 void SkyDisplayer::set_params(int pixX, int pixY, float view_angle,
 				double albedoR, double albedoG, double albedoB,
 				float horizontal_angle, float vertical_angle,
-				int turbid)
+				float turbid)
 {
 	sky_data.horizontal_angle   =   radians(-horizontal_angle);
 	sky_data.vertical_angle     =   radians(vertical_angle);
@@ -138,7 +144,6 @@ void SkyDisplayer::sky_display(/*QPainter* painter*/)
 	vec3    euler_angles(sky_data.vertical_angle,sky_data.horizontal_angle,0.0);
 	quat    rotation(euler_angles);
 	QTime   start_of_exec;
-	int     time_elapsed;
 
 	sky_model->init(color_buffer, sky_data.horizontal_pixels,
 					sky_data.vertical_pixels, sky_data.near_plane,
@@ -146,7 +151,7 @@ void SkyDisplayer::sky_display(/*QPainter* painter*/)
 
 	start_of_exec.start();
 	sky_model->execute(rotation);
-	time_elapsed = start_of_exec.elapsed();
+	last_generation_time = start_of_exec.elapsed();
 
 	dithering();
 	//random_noise();
@@ -208,7 +213,7 @@ void SkyDisplayer::end_thread()
 	copy_from_16bit(R, G, B);
 	//random_noise();
 
-	//time_of_execution->setText( QString::number(time_elapsed) );
+	repaint_timer.stop();
 	emit sky_completed();
 }
 
@@ -448,3 +453,5 @@ void SkyDisplayer::random_noise()
 		color_buffer[i] = color;
 	}
 }
+
+

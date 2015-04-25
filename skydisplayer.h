@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTime>
+#include <QTimer>
 #include "declarations.h"
 #include "completeskymodel.h"
 #include "sky_thread.h"
@@ -34,15 +35,17 @@ private:
 
 	QTime               start_of_exec;
 	int					last_generation_time;
+	QTimer				repaint_timer;
 public:
 	explicit SkyDisplayer( int sizeX, int sizeY, QWidget *parent = 0 );
 
 	void generate_sky(int pixX, int pixY, float view_radius,
 					  double albiedoR, double albiedoG, double albiedoB,
 					  float horizontal_angle, float vertical_angle,
-					  int turbid);
+					  float turbid);
 
 	void save_image(QString& file_name);
+	inline int get_last_generation_time() { return last_generation_time; }
 
 
 	void set_sky_intensity(float);
@@ -52,7 +55,7 @@ public:
 	void set_params(int pixX, int pixY, float view_angle,
 					double albedoR, double albedoG, double albedoB,
 					float horizontal_angle, float vertical_angle,
-					int turbid);
+					float turbid);
 protected:
 	void paintEvent(QPaintEvent *event);
 

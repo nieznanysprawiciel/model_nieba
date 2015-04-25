@@ -288,16 +288,19 @@
               </size>
              </property>
              <property name="minimum">
-              <number>1</number>
+              <number>100</number>
              </property>
              <property name="maximum">
-              <number>10</number>
+              <number>1000</number>
              </property>
              <property name="singleStep">
-              <number>1</number>
+              <number>10</number>
+             </property>
+             <property name="pageStep">
+              <number>100</number>
              </property>
              <property name="value">
-              <number>1</number>
+              <number>100</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -305,7 +308,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="SpinBox_turbidity">
+            <widget class="QDoubleSpinBox" name="SpinBox_turbidity">
              <property name="minimumSize">
               <size>
                <width>47</width>
@@ -313,10 +316,16 @@
               </size>
              </property>
              <property name="minimum">
-              <number>1</number>
+              <double>1.000000000000000</double>
              </property>
              <property name="maximum">
-              <number>10</number>
+              <double>10.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -939,22 +948,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections>
-  <connection>
-   <sender>slider_turbidity</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>SpinBox_turbidity</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>206</x>
-     <y>220</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>259</x>
-     <y>221</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>horizontalSlider_rotation</sender>
    <signal>valueChanged(int)</signal>

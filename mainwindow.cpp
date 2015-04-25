@@ -16,8 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	sky_display = new SkyDisplayer( SIZE_X,SIZE_Y, this );
 	//drawing_area = new DrawingArea(sky_display, SIZE_X, SIZE_Y, this);
 	ui->scrollDrawingArea->setWidget(sky_display);
-    repaint_timer.setInterval(1000);
-    repaint_timer.stop();       //pewnie to zbędne
+
 
     //slidery
     connect(ui->slider_red,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
@@ -27,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->solar_intensity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_solar_elevation,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_view_angle,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->slider_turbidity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
     //spinboxy
     connect(ui->SpinBox_red,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
     connect(ui->SpinBox_green,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
@@ -35,12 +35,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->solar_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_solar_elevation,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_view_angle,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_turbidity,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	//actions
 	connect(ui->actionZapisz_obraz,SIGNAL(triggered()),this,SLOT(save_file()));
     //zakończenie generowania nieba
     connect(sky_display,SIGNAL(sky_completed()),this,SLOT(generation_ended()));
-    //timer odświeżający widok w trakcie generowania
-    connect(&repaint_timer, SIGNAL(timeout()),this, SLOT(repaint_sky()));
+
 }
 
 MainWindow::~MainWindow()
@@ -68,6 +68,8 @@ void MainWindow::value_changed(double value)
 		ui->slider_view_angle->setValue(ret_value);
 	else if( sender() == ui->SpinBox_solar_elevation )
 		ui->slider_solar_elevation->setValue(ret_value);
+	else if( sender() == ui->SpinBox_turbidity )
+		ui->slider_turbidity->setValue(ret_value);
 }
 
 void MainWindow::value_changed(int value)
@@ -88,6 +90,8 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_view_angle->setValue(ret_value);
 	else if( sender() == ui->slider_solar_elevation )
 		ui->SpinBox_solar_elevation->setValue(ret_value);
+	else if( sender() == ui->slider_turbidity )
+		ui->SpinBox_turbidity->setValue(ret_value);
 }
 
 /**@brief Funkcja wykonywana w reakcji na wciśnięcie przycisku do generowania nieba.
@@ -110,7 +114,6 @@ void MainWindow::on_generate_clicked()
 	else
 		sky_display->set_dithering(0);
 
-    repaint_timer.start();
 
 	sky_display->generate_sky(ui->sky_width->value(),
 							   ui->sky_height->value(),
@@ -120,7 +123,7 @@ void MainWindow::on_generate_clicked()
 							   ui->SpinBox_blue->value(),
 							   ui->horizontalSlider_rotation->value(),
 							   ui->verticalSlider_rotation->value(),
-							   ui->slider_turbidity->value());
+							   static_cast<float>( ui->SpinBox_turbidity->value() ));
 }
 
 void MainWindow::save_file()
@@ -136,14 +139,7 @@ i odświeża obszar rysowania.
 */
 void MainWindow::generation_ended()
 {
-    repaint_timer.stop();
 	sky_display->repaint();
     ui->generate->setEnabled(true);
 }
 
-/**@brief Odmalowujemy okno w trakcie generowania nieba, żeby użytkownik widział postęp.
-*/
-void MainWindow::repaint_sky()
-{
-	sky_display->repaint();
-}
