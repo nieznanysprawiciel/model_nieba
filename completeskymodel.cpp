@@ -41,6 +41,7 @@ CompleteSkyModel::CompleteSkyModel(int Version, int channels)
     B16_buffer = NULL;
 
 	perspective_correction = false;
+	gamma_correction = 1.0f;
 }
 
 
@@ -315,6 +316,13 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 		G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
 		B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
+		if( gamma_correction != 1.0 )
+		{
+			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
+		}
+
         R16_buffer[i] = make_16bit( R );
         G16_buffer[i] = make_16bit( G );
         B16_buffer[i] = make_16bit( B );
@@ -525,6 +533,13 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
         G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
         B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
+		if( gamma_correction != 1.0 )
+		{
+			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
+		}
+
         R16_buffer[i] = make_16bit( R );
         G16_buffer[i] = make_16bit( G );
         B16_buffer[i] = make_16bit( B );
@@ -587,3 +602,5 @@ void CompleteSkyModel::next_angles( glm::vec2 angle_step, glm::vec2 top_left_cor
 	if(currentX >= screenX)
 		currentX = 0, ++currentY;
 }
+
+

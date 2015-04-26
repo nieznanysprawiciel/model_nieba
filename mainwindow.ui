@@ -468,8 +468,8 @@
          <widget class="QCheckBox" name="dithering">
           <property name="geometry">
            <rect>
-            <x>30</x>
-            <y>260</y>
+            <x>10</x>
+            <y>280</y>
             <width>70</width>
             <height>17</height>
            </rect>
@@ -723,8 +723,8 @@
          <widget class="QCheckBox" name="check_perspective_correction">
           <property name="geometry">
            <rect>
-            <x>30</x>
-            <y>280</y>
+            <x>10</x>
+            <y>260</y>
             <width>131</width>
             <height>17</height>
            </rect>
@@ -732,6 +732,41 @@
           <property name="text">
            <string>korekcja perspektywy</string>
           </property>
+         </widget>
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>280</y>
+            <width>138</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLabel" name="label_gamma_correction">
+             <property name="text">
+              <string>korekcja gamma</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="gamma_correction">
+             <property name="minimum">
+              <double>0.500000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>3.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.020000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
         <widget class="QGroupBox" name="intensity">

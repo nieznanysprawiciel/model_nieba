@@ -46,13 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-	//delete drawing_area;
     delete sky_display;
 }
 
 void MainWindow::value_changed(double value)
 {
-	int ret_value = (int)(value*100);
+	int ret_value = (int)round( value * 100.0 );
 
     if( sender() == ui->SpinBox_red )
 		ui->slider_red->setValue(ret_value);
@@ -115,7 +114,7 @@ void MainWindow::on_generate_clicked()
 		sky_display->set_dithering(0);
 
 	sky_display->set_perspective_correction( ui->check_perspective_correction->isChecked() );
-
+	sky_display->set_gamma_correction( ui->gamma_correction->value() );
 
 	sky_display->generate_sky(ui->sky_width->value(),
 							   ui->sky_height->value(),
@@ -142,6 +141,8 @@ i odświeża obszar rysowania.
 void MainWindow::generation_ended()
 {
 	sky_display->repaint();
+	int elapsed_time = sky_display->get_last_generation_time();
+	ui->time_of_execution->setText(QString::number(elapsed_time));
     ui->generate->setEnabled(true);
 }
 

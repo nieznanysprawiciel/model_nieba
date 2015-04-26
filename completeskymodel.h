@@ -49,6 +49,7 @@ private:
 	int     currentY;		///<aktualnie przetwarzany piksel ekranu (wersja jednowątkowa)
 
 	bool	perspective_correction;		///< W zależności od tej zmiennej używana jest wersja z korekcją perspektywy lub nie
+	float	gamma_correction;			///< Korekcja gamma dla całego obrazka.
 
 public:
     CompleteSkyModel(int Version, int channels);
@@ -70,6 +71,7 @@ public:
 	void set_sky_intensity(float intensity);
 	void set_solar_intensity(float intensity);
     void set_rotation(quat & screen_rot);      //do wielowątkowych funkcji
+	inline void set_gamma_correction( float value ) { gamma_correction = value; }
 	inline void use_perspective_correction( bool set ) { perspective_correction = set; }
 
     int* execute( quat & screen_rot );

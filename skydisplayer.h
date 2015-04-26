@@ -57,6 +57,7 @@ public:
 					float horizontal_angle, float vertical_angle,
 					float turbid);
 	inline void set_perspective_correction( bool value ){ sky_model->use_perspective_correction( value ); }
+	inline void set_gamma_correction( float value ) { sky_model->set_gamma_correction( value ); }
 protected:
 	void paintEvent(QPaintEvent *event);
 
