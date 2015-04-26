@@ -114,6 +114,8 @@ void MainWindow::on_generate_clicked()
 	else
 		sky_display->set_dithering(0);
 
+	sky_display->set_perspective_correction( ui->check_perspective_correction->isChecked() );
+
 
 	sky_display->generate_sky(ui->sky_width->value(),
 							   ui->sky_height->value(),

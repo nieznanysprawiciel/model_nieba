@@ -56,6 +56,7 @@ public:
 					double albedoR, double albedoG, double albedoB,
 					float horizontal_angle, float vertical_angle,
 					float turbid);
+	inline void set_perspective_correction( bool value ){ sky_model->use_perspective_correction( value ); }
 protected:
 	void paintEvent(QPaintEvent *event);
 

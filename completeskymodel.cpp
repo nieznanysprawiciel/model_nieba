@@ -39,6 +39,8 @@ CompleteSkyModel::CompleteSkyModel(int Version, int channels)
     R16_buffer = NULL;
     G16_buffer = NULL;
     B16_buffer = NULL;
+
+	perspective_correction = false;
 }
 
 
@@ -354,16 +356,12 @@ void CompleteSkyModel::screen_vectors(vec3 & horizontal_step, vec3 & vertical_st
     vertical_step = vec3(0,-1,0);
 
     //ustalamy długość wektora ekranu na odległóść od bliższej płaszczyzny odcinania
-    top_left_corner = default_direction*(float)screen_near_plane;
+	top_left_corner = default_direction*(float)screen_near_plane;
     //tworzymy wektordo lewej górnej części ekranu
     top_left_corner = top_left_corner
             - horizontal_step*((float)screenX/2)
             - vertical_step*((float)screenY/2);
 
-    /*test*/
-    float x = top_left_corner.x;
-    float y = top_left_corner.y;
-    float z = top_left_corner.z;
 
     /*do tej pory operowaliśmy w pozycji domyślnej
     teraz przemnażając przez kwaternion obrotu ekranu ustawimy
@@ -372,19 +370,30 @@ void CompleteSkyModel::screen_vectors(vec3 & horizontal_step, vec3 & vertical_st
     vertical_step   = screen_rotation*vertical_step;
     top_left_corner = screen_rotation*top_left_corner;
 
-    /*test*/
-    x = top_left_corner.x;
-    y = top_left_corner.y;
-    z = top_left_corner.z;
 
     //inicjacja zmiennych dla funkcji next_angles
     currentX = 0;
     currentY = 0;
 }
 
+/**Funkcja oblicza lewy górny róg obrazu we współrzędnych sferycznych
+oraz przyrost kąta w kazdej iteracji.*/
+void CompleteSkyModel::screen_angles( glm::vec2& delta_angles, glm::vec2& top_left_angles )
+{
+	top_left_angles.x = atan( double( screenX / 2 ), (double)screen_near_plane );
+	top_left_angles.y = atan( double( screenY / 2 ), (double)screen_near_plane );
+
+	delta_angles.x = 2 * top_left_angles.x / float( screenX );
+	delta_angles.y = -2 * top_left_angles.y / float( screenY );
+
+	top_left_angles.x = -top_left_angles.x;
+}
+
 /*oblicza kolejne kąty gamma i theta, których wymaga model
  * funkcja przechowuje wewnątrz aktualny stan, trzeba wywołać funkcję
  * screen_vectors, która inicjuje ten stan odpowiednimi danymi
+
+ Wersja jednowątkowa.
  */
 void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
                  vec3 & top_left_corner, double& theta, double& gamma)
@@ -395,17 +404,8 @@ void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
             + (float)currentX*horizontal_step
             + (float)currentY*vertical_step;
 
-    /*test*/
-    float x = view_direction.x;
-    float y = view_direction.y;
-    float z = view_direction.z;
 
     view_direction = normalize(view_direction);
-
-    /*test*/
-    x = view_direction.x;
-    y = view_direction.y;
-    z = view_direction.z;
 
 	gamma = angle(sun_direction,view_direction);
 	theta = angle(zenith_direction,view_direction);
@@ -480,9 +480,11 @@ int* CompleteSkyModel::execute( int offset, int max)
 
 void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int max)
 {
-    vec3    horizontal_step;
-    vec3    vertical_step;
-    vec3    top_left_corner;
+	glm::vec3	horizontal_step;
+	glm::vec3	vertical_step;
+	glm::vec3	top_left_corner;
+	glm::vec2	angles_delta;
+	glm::vec2	top_left_angles;
     double  theta;
     double  gamma;
     int     curX;
@@ -492,7 +494,10 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
     curY = offset / screenX;        //dzielenie całkowite
     curX = offset - curY*screenX;
 
-    screen_vectors( horizontal_step, vertical_step, top_left_corner );
+	if( perspective_correction )
+		screen_angles( angles_delta, top_left_angles );
+	else
+		screen_vectors( horizontal_step, vertical_step, top_left_corner );
 
     unsigned int max_loop = max;
     for( unsigned int i = offset; i < max_loop;  ++i )
@@ -501,9 +506,12 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
         double G;
         double B;
 
-        next_angles( horizontal_step, vertical_step,
-                     top_left_corner,
-                     theta, gamma, curX, curY );
+		if( perspective_correction )
+			next_angles( angles_delta, top_left_angles, theta, gamma, curX, curY );
+		else
+			next_angles( horizontal_step, vertical_step,
+						 top_left_corner,
+						 theta, gamma, curX, curY );
 
         R = arhosek_tristim_skymodel_radiance( skymodel_state[0], theta, gamma, 0 );
         G = arhosek_tristim_skymodel_radiance( skymodel_state[1], theta, gamma, 1 );
@@ -525,9 +533,11 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
 }
 
 
-/*oblicza kolejne kąty gamma i theta, których wymaga model
+/**Oblicza kolejne kąty gamma i theta, których wymaga model
  * funkcja przechowuje wewnątrz aktualny stan, trzeba wywołać funkcję
- * screen_vectors, która inicjuje ten stan odpowiednimi danymi
+ * screen_vectors, która inicjuje ten stan odpowiednimi danymi.
+
+ Wersja wielowątkowa.
  */
 void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
                  vec3 & top_left_corner, double& theta, double& gamma,
@@ -549,3 +559,31 @@ void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
         currentX = 0, ++currentY;
 }
 
+
+/**Oblicza kolejne kąty gamma i theta, których wymaga model.
+
+Dla wersji nieba ze sferyczną korekcją perspektywy.
+
+@param[in] angle_step Wektor zawierający kąty o jakie obracamy wektor podczas jednej iteracji.
+@param[in] top_left_corner Wektor zawiera kąty początkowe lewego górnego rogu obszaru widzenia.*/
+void CompleteSkyModel::next_angles( glm::vec2 angle_step, glm::vec2 top_left_corner, double& theta, double& gamma,
+				 int & currentX, int & currentY )
+{
+	glm::vec3 view_direction;
+	glm::vec2 step_multiplier( static_cast<float>( currentX ), static_cast<float>( currentY ) );
+	glm::vec2 angles = top_left_corner + angle_step * step_multiplier;
+
+	view_direction.x = cos( angles.y ) * sin( angles.x );
+	view_direction.y = sin( angles.y );
+	view_direction.z = - cos( angles.x ) * cos( angles.y );
+
+	view_direction = screen_rotation * view_direction;
+	view_direction = glm::normalize( view_direction );
+
+	gamma = angle(sun_direction,view_direction);
+	theta = angle(zenith_direction,view_direction);
+
+	++currentX;
+	if(currentX >= screenX)
+		currentX = 0, ++currentY;
+}

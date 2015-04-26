@@ -139,7 +139,7 @@ void SkyDisplayer::set_solar_elevation(float elevation)
 	sun_vector.z = -glm::cos(rad_elevation);
 }
 
-void SkyDisplayer::sky_display(/*QPainter* painter*/)
+void SkyDisplayer::sky_display()
 {
 	vec3    euler_angles(sky_data.vertical_angle,sky_data.horizontal_angle,0.0);
 	quat    rotation(euler_angles);
@@ -155,8 +155,6 @@ void SkyDisplayer::sky_display(/*QPainter* painter*/)
 
 	dithering();
 	//random_noise();
-
-	//time_of_execution->setText( QString::number(time_elapsed) );
 }
 
 void SkyDisplayer::sky_display_multithreads()

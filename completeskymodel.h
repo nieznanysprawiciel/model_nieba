@@ -29,24 +29,26 @@ private:
     int     screenY;
     int     screen_near_plane;
 
-	unsigned int     version;	//jeden z trybów XYZ, RGB lub spectral
+	unsigned int     version;	///<jeden z trybów XYZ, RGB lub spectral
 
-	int     num_channels;	//liczba kanałów
-	double* albedo;			//tablica zawierająca albedo dla poszczególnych kanałów
-	double  turbidity;		//nieprzezroczystość amtosfery
+	int     num_channels;	///<liczba kanałów
+	double* albedo;			///<tablica zawierająca albedo dla poszczególnych kanałów
+	double  turbidity;		///<nieprzezroczystość amtosfery
 	float	sky_intensity;
 	float	solar_intensity;
     double  sun_elevation;
 
-	vec3    default_direction;	//domyślny wektor ekranu
-	quat    screen_rotation;	//aktualny kwaternion obrotu ekranu
-	vec3    sun_direction;		//wektor w kierunku słońca
-	vec3    zenith_direction;	//wektor w kierunku zenitu
+	vec3    default_direction;	///<domyślny wektor ekranu
+	quat    screen_rotation;	///<aktualny kwaternion obrotu ekranu
+	vec3    sun_direction;		///<wektor w kierunku słońca
+	vec3    zenith_direction;	///<wektor w kierunku zenitu
 
     ArHosekSkyModelState  ** skymodel_state;
 
-	int     currentX;		//zmienne dla funkcji next_angles
-	int     currentY;		//aktualnie przetwarzany piksel ekranu
+	int     currentX;		///<zmienne dla funkcji next_angles (wersja jednowątkowa)
+	int     currentY;		///<aktualnie przetwarzany piksel ekranu (wersja jednowątkowa)
+
+	bool	perspective_correction;		///< W zależności od tej zmiennej używana jest wersja z korekcją perspektywy lub nie
 
 public:
     CompleteSkyModel(int Version, int channels);
@@ -68,6 +70,7 @@ public:
 	void set_sky_intensity(float intensity);
 	void set_solar_intensity(float intensity);
     void set_rotation(quat & screen_rot);      //do wielowątkowych funkcji
+	inline void use_perspective_correction( bool set ) { perspective_correction = set; }
 
     int* execute( quat & screen_rot );
     int* execute(int offset, int max ); //do wielowątkowego wykonania
@@ -87,11 +90,15 @@ private:        //funkcje pomocnicze
 
     void screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
                         vec3 & top_left_corner);
+	void screen_angles( glm::vec2& delta_angles, glm::vec2& top_left_angles );
     void next_angles(vec3 & horizontal_step, vec3 & vertical_step,
                      vec3 & top_left_corner, double& theta, double& gamma);
     void next_angles(vec3 & horizontal_step, vec3 & vertical_step,
                      vec3 & top_left_corner, double& theta, double& gamma,
                      int & currentX, int & currentY);
+	void next_angles(	glm::vec2 angle_step, glm::vec2 top_left_corner,
+						double& theta, double& gamma,
+						int & currentX, int & currentY );
     unsigned int make_RGB(double& R, double& G, double& B);
     unsigned short make_16bit(double& color);
 

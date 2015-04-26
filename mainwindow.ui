@@ -418,7 +418,7 @@
            <x>9</x>
            <y>209</y>
            <width>251</width>
-           <height>281</height>
+           <height>311</height>
           </rect>
          </property>
          <property name="title">
@@ -506,7 +506,7 @@
                <number>1</number>
               </property>
               <property name="maximum">
-               <number>17900</number>
+               <number>17999</number>
               </property>
               <property name="value">
                <number>6000</number>
@@ -522,7 +522,7 @@
                <double>1.000000000000000</double>
               </property>
               <property name="maximum">
-               <double>179.000000000000000</double>
+               <double>179.990000000000009</double>
               </property>
               <property name="singleStep">
                <double>0.010000000000000</double>
@@ -719,6 +719,19 @@
             </item>
            </layout>
           </widget>
+         </widget>
+         <widget class="QCheckBox" name="check_perspective_correction">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>280</y>
+            <width>131</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>korekcja perspektywy</string>
+          </property>
          </widget>
         </widget>
         <widget class="QGroupBox" name="intensity">
