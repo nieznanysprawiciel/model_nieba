@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
+#include <QDate>
+#include <QDateTime>
+#include <QCalendarWidget>
 
 #define SIZE_X  900
 #define SIZE_Y  660
@@ -27,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->slider_solar_elevation,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_view_angle,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_turbidity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->slider_latitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->slider_longitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
     //spinboxy
     connect(ui->SpinBox_red,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
     connect(ui->SpinBox_green,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
@@ -36,17 +41,36 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->SpinBox_solar_elevation,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_view_angle,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_turbidity,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_latitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_longitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	//actions
 	connect(ui->actionZapisz_obraz,SIGNAL(triggered()),this,SLOT(save_file()));
     //zakończenie generowania nieba
     connect(sky_display,SIGNAL(sky_completed()),this,SLOT(generation_ended()));
 
+	//kalendarz
+	connect(ui->calendarWidget, SIGNAL(selectionChanged()), this, SLOT(calendarChanged()) );
+	connect(ui->dateTimeEdit, SIGNAL(dateChanged(QDate)), this,SLOT(dateTimeChanged()) );
+
+	ui->dateTimeEdit->setDate(ui->calendarWidget->selectedDate());	// Ustawiamy czas, żeby był ten sam w obu kontrolkach.
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete sky_display;
+}
+
+void MainWindow::calendarChanged()
+{
+	QDate selectedDate = ui->calendarWidget->selectedDate();
+	ui->dateTimeEdit->setDate( selectedDate );
+}
+
+void MainWindow::dateTimeChanged()
+{
+	QDate selectedDate = ui->dateTimeEdit->date();
+	ui->calendarWidget->setSelectedDate( selectedDate );
 }
 
 void MainWindow::value_changed(double value)
@@ -69,6 +93,10 @@ void MainWindow::value_changed(double value)
 		ui->slider_solar_elevation->setValue(ret_value);
 	else if( sender() == ui->SpinBox_turbidity )
 		ui->slider_turbidity->setValue(ret_value);
+	else if( sender() == ui->SpinBox_latitude )
+		ui->slider_latitude->setValue(ret_value);
+	else if( sender() == ui->SpinBox_longitude )
+		ui->slider_longitude->setValue(ret_value);
 }
 
 void MainWindow::value_changed(int value)
@@ -91,6 +119,10 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_solar_elevation->setValue(ret_value);
 	else if( sender() == ui->slider_turbidity )
 		ui->SpinBox_turbidity->setValue(ret_value);
+	else if( sender() == ui->slider_latitude)
+		ui->SpinBox_latitude->setValue(ret_value);
+	else if( sender() == ui->slider_longitude )
+		ui->SpinBox_longitude->setValue(ret_value);
 }
 
 /**@brief Funkcja wykonywana w reakcji na wciśnięcie przycisku do generowania nieba.

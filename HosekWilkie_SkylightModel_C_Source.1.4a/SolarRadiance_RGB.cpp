@@ -71,7 +71,7 @@ double arhosekskymodel_sr_internalRGB(
 		x_exp *= x;
 	}
 
-	return res/* * state->emission_correction_factor_sun[wl]*/;		//potrzebny przy alien world
+	return res/* * state->emission_correction_factor_sun[channel]*/;		//potrzebny przy alien world
 }
 
 double solar_radiance_RGB(

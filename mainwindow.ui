@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -284,10 +284,6 @@
              </item>
             </layout>
            </widget>
-           <zorder>layoutWidget</zorder>
-           <zorder>layoutWidget_2</zorder>
-           <zorder>layoutWidget</zorder>
-           <zorder>tabWidget</zorder>
           </widget>
           <widget class="QGroupBox" name="group_turbidity">
            <property name="geometry">
@@ -960,6 +956,227 @@
          <attribute name="title">
           <string>Parametry świata</string>
          </attribute>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>180</y>
+            <width>241</width>
+            <height>161</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Współrzędne geograficzne</string>
+          </property>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>221</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Szerokość geograficzna</string>
+           </property>
+           <widget class="QWidget" name="layoutWidget_8">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>201</width>
+              <height>24</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QSlider" name="slider_latitude">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <number>-9000</number>
+               </property>
+               <property name="maximum">
+                <number>9000</number>
+               </property>
+               <property name="singleStep">
+                <number>1</number>
+               </property>
+               <property name="pageStep">
+                <number>100</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="SpinBox_latitude">
+               <property name="minimumSize">
+                <size>
+                 <width>47</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <double>-90.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>90.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.010000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_9">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>90</y>
+             <width>221</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Długość geograficzna</string>
+           </property>
+           <widget class="QWidget" name="layoutWidget_9">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>201</width>
+              <height>24</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <widget class="QSlider" name="slider_longitude">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <number>-18000</number>
+               </property>
+               <property name="maximum">
+                <number>18000</number>
+               </property>
+               <property name="singleStep">
+                <number>1</number>
+               </property>
+               <property name="pageStep">
+                <number>100</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="SpinBox_longitude">
+               <property name="minimumSize">
+                <size>
+                 <width>47</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <double>-180.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>180.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.010000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>350</y>
+            <width>261</width>
+            <height>221</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Dzień i pora dnia</string>
+          </property>
+          <widget class="QCalendarWidget" name="calendarWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>241</width>
+             <height>161</height>
+            </rect>
+           </property>
+           <property name="horizontalHeaderFormat">
+            <enum>QCalendarWidget::ShortDayNames</enum>
+           </property>
+           <property name="verticalHeaderFormat">
+            <enum>QCalendarWidget::NoVerticalHeader</enum>
+           </property>
+          </widget>
+          <widget class="QDateTimeEdit" name="dateTimeEdit">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>20</y>
+             <width>194</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="currentSection">
+            <enum>QDateTimeEdit::YearSection</enum>
+           </property>
+           <property name="displayFormat">
+            <string>yyyy-MM-dd HH:mm:ss</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>241</width>
+            <height>161</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Presety</string>
+          </property>
+         </widget>
         </widget>
        </widget>
       </item>
@@ -979,10 +1196,6 @@
          <height>694</height>
         </rect>
        </property>
-       <zorder></zorder>
-       <zorder></zorder>
-       <zorder>group_parametry</zorder>
-       <zorder></zorder>
       </widget>
      </widget>
     </item>

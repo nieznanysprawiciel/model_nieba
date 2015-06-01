@@ -31,6 +31,8 @@ private slots:
     void on_generate_clicked();
     void generation_ended();
 	void save_file();
+	void calendarChanged();
+	void dateTimeChanged();
 };
 
 #endif // MAINWINDOW_H
