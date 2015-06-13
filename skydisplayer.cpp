@@ -13,9 +13,9 @@ SkyDisplayer::SkyDisplayer( int sizeX, int sizeY, QWidget *parent ) :
 	sky_data.vertical_pixels    =   sizeY;
 	sky_data.near_plane         =   sizeX;
 
-	sky_data.albedo[0] = 0.8;
-	sky_data.albedo[1] = 0.8;
-	sky_data.albedo[2] = 0.8;
+	for( int i = 0; i < 10; ++i )
+		sky_data.albedo[i] = 0.8;
+
 
 	sky_data.turbidity = 1;
 	dithering_level = 0;
@@ -30,7 +30,7 @@ SkyDisplayer::SkyDisplayer( int sizeX, int sizeY, QWidget *parent ) :
 	for(int i= 0 ; i < sizeX*sizeY; ++i)
 		color_buffer[i] = 0xFFFFFFFF;
 
-	sky_model = new CompleteSkyModel(VERSION_RGB, 3);
+	sky_model = new CompleteSkyModel(VERSION_SPECTRAL, 9);
 	sky_model->init(color_buffer, sizeX, sizeY, sizeX,
 					sky_data.albedo, sky_data.turbidity,
 					zenith, sun_vector);

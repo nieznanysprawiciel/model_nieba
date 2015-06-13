@@ -9,7 +9,7 @@ struct SkyData
     int     vertical_pixels;
     int     horizontal_pixels;
     int     near_plane;
-	double	albedo[3];
+	double	albedo[10];
 	float	turbidity;
 };
 

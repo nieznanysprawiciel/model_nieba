@@ -25,6 +25,17 @@ CompleteSkyModel::CompleteSkyModel(int Version, int channels)
         num_channels = channels;
 
     albedo = new double[num_channels];
+	channels_wave = NULL;
+	if( version == VERSION_SPECTRAL )
+	{
+		channels_wave = new double[num_channels];
+		for( int i = 0; i < WAVE_LENGTHS; ++i )
+		{
+			channels_wave[i] = 400 + i * 40;
+			albedo[i] = 0.8;
+		}
+
+	}
 
     skymodel_state = new ArHosekSkyModelState*[num_channels];
     for( int i=0; i<num_channels; ++i)
@@ -50,6 +61,7 @@ CompleteSkyModel::~CompleteSkyModel()
     clear_HosekWilkie_model();
     delete[] skymodel_state;
     delete[] albedo;
+	delete[] channels_wave;
 
     if( R16_buffer )
         delete[] R16_buffer;
@@ -210,8 +222,8 @@ int* CompleteSkyModel::execute(quat & screen_rot)
 
     if( version == VERSION_RGB || version == VERSION_XYZ )
         generate_sky_RGB_XYZ();
-    else if( version == VERSION_SPECTRAL )
-        generate_sky_spectral();
+	/*else if( version == VERSION_SPECTRAL )
+		generate_sky_spectral();*/
 
     return color_buffer;
 }
@@ -220,27 +232,6 @@ int* CompleteSkyModel::execute(quat & screen_rot)
 
 
 
-/*
-int* CompleteSkyModel::execute(quat & screen_rot, vec3 & sun )
-{
-    sun_direction = normalize(sun);
-
-    calculate_sun_elevation();
-
-    execute( screen_rot );
-    return color_buffer;
-}
-
-int* CompleteSkyModel::execute( quat & screen_rot, vec3 & sun, vec3 & zenith )
-{
-    sun_direction = normalize(sun);
-    zenith_direction = normalize(zenith);
-
-    calculate_sun_elevation();
-
-    execute( screen_rot );
-    return color_buffer;
-}*/
 
 //-----------------------------------------------------------------------//
 //                          funkcje pomocnicze                           //
@@ -331,15 +322,6 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 
 }
 
-void CompleteSkyModel::generate_sky_spectral()
-{
-    /*vec3    horizontal_step;
-    vec3    vertical_step;
-    vec3    top_left_corner;
-    double  theta;
-    double  gamma;*/
-
-}
 
 //potrzebne dla funkcji inicjującej arhosek_rgb_skymodelstate_alloc_init
 void CompleteSkyModel::calculate_sun_elevation()
@@ -478,8 +460,8 @@ int* CompleteSkyModel::execute( int offset, int max)
 
     if( version == VERSION_RGB || version == VERSION_XYZ )
         generate_sky_RGB_XYZ(offset, max);
-    /*else if( version == VERSION_SPECTRAL )
-        generate_sky_spectral();    //wersja niedostępna*/
+	else if( version == VERSION_SPECTRAL )
+		generate_sky_spectral( offset, max );
 
     return color_buffer;
 }
@@ -545,6 +527,80 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
         B16_buffer[i] = make_16bit( B );
         color_buffer[i] = make_RGB(R,G,B);
     }
+}
+
+void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int max )
+{
+	glm::vec3	horizontal_step;
+	glm::vec3	vertical_step;
+	glm::vec3	top_left_corner;
+	glm::vec2	angles_delta;
+	glm::vec2	top_left_angles;
+	double  theta;
+	double  gamma;
+	int     curX;
+	int     curY;
+
+	//obliczamy pozycję początkową dla naszego wątku
+	curY = offset / screenX;        //dzielenie całkowite
+	curX = offset - curY*screenX;
+
+	if( perspective_correction )
+		screen_angles( angles_delta, top_left_angles );
+	else
+		screen_vectors( horizontal_step, vertical_step, top_left_corner );
+
+	unsigned int max_loop = max;
+	for( unsigned int i = offset; i < max_loop;  ++i )
+	{
+		double R;
+		double G;
+		double B;
+		double spectralValues[num_channels];
+
+		if( perspective_correction )
+			next_angles( angles_delta, top_left_angles, theta, gamma, curX, curY );
+		else
+			next_angles( horizontal_step, vertical_step,
+						 top_left_corner,
+						 theta, gamma, curX, curY );
+
+		for( int i = 0; i < num_channels; ++i )
+			spectralValues[ i ] = arhosekskymodel_radiance( skymodel_state[ i ], theta, gamma, channels_wave[ i ] );
+
+		R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
+		G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
+		B = spectralConversion.convertRGB<BLUE_CHANNEL>( spectralValues );
+
+
+		R *= sky_intensity;
+		G *= sky_intensity;
+		B *= sky_intensity;
+/*
+		R = arhosek_tristim_skymodel_radiance( skymodel_state[0], theta, gamma, 0 );
+		G = arhosek_tristim_skymodel_radiance( skymodel_state[1], theta, gamma, 1 );
+		B = arhosek_tristim_skymodel_radiance( skymodel_state[2], theta, gamma, 2 );
+
+		R *= sky_intensity;
+		G *= sky_intensity;
+		B *= sky_intensity;
+
+		R += solar_intensity * solar_radiance_RGB( skymodel_state[0], 0, (glm::half_pi<double>()-theta), gamma);
+		G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
+		B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
+*/
+		if( gamma_correction != 1.0 )
+		{
+			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
+		}
+
+		R16_buffer[i] = make_16bit( R );
+		G16_buffer[i] = make_16bit( G );
+		B16_buffer[i] = make_16bit( B );
+		color_buffer[i] = make_RGB(R,G,B);
+	}
 }
 
 

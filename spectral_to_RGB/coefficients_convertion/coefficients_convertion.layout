@@ -3,12 +3,18 @@
 	<ActiveTarget name="Release" />
 	<File name="CIEXYZ_distribution.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="81" topLine="199" />
+			<Cursor1 position="81" topLine="196" />
 		</Cursor>
 	</File>
 	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11328" topLine="280" />
+			<Cursor1 position="4004" topLine="122" />
 		</Cursor>
+		<Folding>
+			<Collapse line="163" />
+			<Collapse line="216" />
+			<Collapse line="262" />
+			<Collapse line="308" />
+		</Folding>
 	</File>
 </CodeBlocks_layout_file>

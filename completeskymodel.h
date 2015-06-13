@@ -8,6 +8,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "HosekWilkie_SkylightModel_C_Source.1.4a/ArHosekSkyModel.h"
 #include "HosekWilkie_SkylightModel_C_Source.1.4a/ArHosekSkyModelSolarRadiance_RGB.h"
+#include "spectral_to_RGB/SpectralConversion.h"
 
 
 #define     VERSION_RGB         0x0
@@ -20,7 +21,7 @@ using namespace glm;
 class CompleteSkyModel
 {
 private:
-    int*    color_buffer;	///<Bufor, w którym znajdzie się wynik
+	int*			color_buffer;	///<Bufor, w którym znajdzie się wynik
     unsigned short*  R16_buffer;     ///<Bufor dla koloru czerwonego w formacie float
     unsigned short*  G16_buffer;     ///<Bufor dla koloru zielonego w formacie float
     unsigned short*  B16_buffer;     ///<Bufor dla koloru niebieskiego w formacie float
@@ -32,6 +33,7 @@ private:
 	unsigned int     version;	///<jeden z trybów XYZ, RGB lub spectral
 
 	int     num_channels;	///<liczba kanałów
+	double* channels_wave;	///<Długości fali dla poszczególnych kanałów.
 	double* albedo;			///<tablica zawierająca albedo dla poszczególnych kanałów
 	double  turbidity;		///<nieprzezroczystość amtosfery
 	float	sky_intensity;
@@ -43,7 +45,8 @@ private:
 	vec3    sun_direction;		///<wektor w kierunku słońca
 	vec3    zenith_direction;	///<wektor w kierunku zenitu
 
-    ArHosekSkyModelState  ** skymodel_state;
+	ArHosekSkyModelState**		skymodel_state;
+	SpectralConversion			spectralConversion;
 
 	int     currentX;		///<zmienne dla funkcji next_angles (wersja jednowątkowa)
 	int     currentY;		///<aktualnie przetwarzany piksel ekranu (wersja jednowątkowa)
@@ -87,7 +90,7 @@ private:        //funkcje pomocnicze
     void clear_HosekWilkie_model();
     void generate_sky_RGB_XYZ();
     void generate_sky_RGB_XYZ(unsigned int offset, unsigned int max);
-    void generate_sky_spectral();
+	void generate_sky_spectral(unsigned int offset, unsigned int max);
     void calculate_sun_elevation();
 
     void screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
