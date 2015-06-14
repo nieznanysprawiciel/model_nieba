@@ -702,14 +702,15 @@ double arhosekskymodel_solar_radiance_internal2(
         double                  gamma
         )
 {
-    assert(
-           wavelength >= 320.0
-        && wavelength <= 720.0
-        && state->turbidity >= 1.0
-        && state->turbidity <= 10.0
-        );
+	assert( wavelength >= 320.0 );
+	assert( wavelength <= 720.0 );
+	assert( state->turbidity >= 1.0 );
+	assert( state->turbidity <= 10.0 );
             
-    
+	//Jeżeli jesteśmy poza tarcza słoneczną, to zwracamy czarny kolor
+	if( gamma > state->solar_radius )
+		return 0.0;
+
     int     turb_low  = (int) state->turbidity - 1;
     double  turb_frac = state->turbidity - (double) (turb_low + 1);
     

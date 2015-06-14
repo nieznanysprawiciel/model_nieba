@@ -18,6 +18,8 @@
 
 using namespace glm;
 
+const double SPECTRAL_SCALE = 10.0;
+
 class CompleteSkyModel
 {
 private:

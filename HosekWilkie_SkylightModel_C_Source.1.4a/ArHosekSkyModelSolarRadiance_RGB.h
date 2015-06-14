@@ -10,5 +10,10 @@ double solar_radiance_RGB(
 		double                  gamma
 		);
 
-
+double arhosekskymodel_solar_radiance_internal2(
+		ArHosekSkyModelState  * state,
+		double                  wavelength,
+		double                  elevation,
+		double                  gamma
+		);
 #endif
