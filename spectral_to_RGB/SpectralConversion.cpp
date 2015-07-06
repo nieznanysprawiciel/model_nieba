@@ -12,14 +12,14 @@ SpectralConversion::SpectralConversion()
 void SpectralConversion::buildConversionXYZ()
 {
 	//wype³niamy tablicê przeliczników
-	for( int i = 0; i < WAVE_LENGTHS; ++i )
+	for( int i = 0; i < COEFFICIENTS; ++i )
 	{//chodzimy po d³ugoœciach fali
 		//najpierw przeskakujemy nieu¿ywany obszar (8)
-		//przeskakujemy do odpowiedniej d³ugoœci fali (i*4*8)
+		//przeskakujemy do odpowiedniej d³ugoœci fali (i*4)
 		//wybieramy odpowiedni¹ kolumnê
-		double l_lambda = XYZ_cone_fundamentals[8 + i*4*8 + 1];
-		double m_lambda = XYZ_cone_fundamentals[8 + i*4*8 + 2];
-		double s_lambda = XYZ_cone_fundamentals[8 + i*4*8 + 3];
+		double l_lambda = XYZ_cone_fundamentals[8 + i*4 + 1];
+		double m_lambda = XYZ_cone_fundamentals[8 + i*4 + 2];
+		double s_lambda = XYZ_cone_fundamentals[8 + i*4 + 3];
 
 		for(int j = 0; j < 3; ++j)
 		{//chodzimy po cmf dla X,Y i Z
@@ -32,7 +32,7 @@ void SpectralConversion::buildConversionXYZ()
 
 void SpectralConversion::buildConversionRGB()
 {
-	for( int i = 0; i < WAVE_LENGTHS; ++i )
+	for( int i = 0; i < COEFFICIENTS; ++i )
 	{
 		for( int j = 0; j < 3; ++j )
 		{

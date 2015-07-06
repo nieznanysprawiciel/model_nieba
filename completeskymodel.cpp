@@ -22,7 +22,7 @@ CompleteSkyModel::CompleteSkyModel(int Version, int channels)
     if( version != VERSION_SPECTRAL )
         num_channels = 3;
     else
-        num_channels = channels;
+		num_channels = channels;
 
     albedo = new double[num_channels];
 	channels_wave = NULL;
@@ -564,16 +564,24 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 						 top_left_corner,
 						 theta, gamma, curX, curY );
 
-		for( int j = 0; j < num_channels; ++j )
-			spectralValues[ j ] = SPECTRAL_SCALE * sky_intensity * arhosekskymodel_radiance( skymodel_state[ j ], theta, gamma, channels_wave[ j ] );
+		if( theta <= glm::half_pi<float>() )
+		{
+			for( int j = 0; j < num_channels; ++j )
+				spectralValues[ j ] = SPECTRAL_SCALE * sky_intensity * arhosekskymodel_radiance( skymodel_state[ j ], theta, gamma, channels_wave[ j ] );
 
-		for( int j = 0; j < num_channels; ++j )
-			spectralValues[ j ] += SPECTRAL_SCALE * solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
+			for( int j = 0; j < num_channels; ++j )
+				spectralValues[ j ] += SPECTRAL_SCALE * solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
 
-		R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
-		G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
-		B = spectralConversion.convertRGB<BLUE_CHANNEL>( spectralValues );
-
+			R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
+			G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
+			B = spectralConversion.convertRGB<BLUE_CHANNEL>( spectralValues );
+		}
+		else
+		{
+			R = 0.0;
+			G = 0.0;
+			B = 0.0;
+		}
 
 		if( gamma_correction != 1.0 )
 		{

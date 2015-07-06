@@ -3,6 +3,7 @@
 
 
 #define WAVE_LENGTHS	9
+#define COEFFICIENTS	((WAVE_LENGTHS - 1)*8 + 1)
 
 #define RED_CHANNEL				0
 #define GREAN_CHANNEL			1
@@ -20,8 +21,8 @@ zaimpementuje ogólniejsze algorytmy.*/
 class SpectralConversion
 {
 private:
-	double			m_transformMatrix[WAVE_LENGTHS][3];
-	double			m_CMF[WAVE_LENGTHS][3];
+	double			m_transformMatrix[COEFFICIENTS][3];
+	double			m_CMF[COEFFICIENTS][3];
 
 protected:
 	void buildConversionRGB();
@@ -42,8 +43,22 @@ double SpectralConversion::convertRGB( double* wavesTable )
 {
 	double result = 0.0;
 
-	for( int i = 0; i < WAVE_LENGTHS; ++i )
-		result += m_transformMatrix[ i ][ channel ] * wavesTable[ i ];
+	double extendedWaveTable[COEFFICIENTS];
+	int extWave = 0;
+	for( int k = 0; k < WAVE_LENGTHS - 1; ++k )
+	{
+		for( int j = 0; j < 8; ++j )
+		{
+			double weight1 = j/8.0;		//j*5/40
+			double weight2 = 1 - weight1;
+			extendedWaveTable[ extWave ] = weight2 * wavesTable[ k ] + weight1 * wavesTable[ k + 1 ];
+			extWave++;
+		}
+	}
+	extendedWaveTable[ extWave ] = wavesTable[ WAVE_LENGTHS - 1 ];
+
+	for( int i = 0; i < COEFFICIENTS; ++i )
+		result += m_transformMatrix[ i ][ channel ] * extendedWaveTable[ i ];
 
 	return result;
 }

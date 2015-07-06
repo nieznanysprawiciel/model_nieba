@@ -145,11 +145,13 @@ void SkyDisplayer::sky_display()
 	quat    rotation(euler_angles);
 	QTime   start_of_exec;
 
+	start_of_exec.start();
+
 	sky_model->init(color_buffer, sky_data.horizontal_pixels,
 					sky_data.vertical_pixels, sky_data.near_plane,
 					sky_data.albedo, sky_data.turbidity, sun_vector);
 
-	start_of_exec.start();
+
 	sky_model->execute(rotation);
 	last_generation_time = start_of_exec.elapsed();
 
@@ -161,6 +163,8 @@ void SkyDisplayer::sky_display_multithreads()
 {
 	vec3    euler_angles(sky_data.vertical_angle,sky_data.horizontal_angle,0.0);
 	quat    rotation(euler_angles);
+
+	start_of_exec.restart();
 
 	sky_model->init(color_buffer, sky_data.horizontal_pixels,
 					sky_data.vertical_pixels, sky_data.near_plane,
@@ -185,7 +189,7 @@ void SkyDisplayer::sky_display_multithreads()
 	for( int i = 0; i < threads_count; ++i )
 		connect(threads[i],SIGNAL(finished()),this,SLOT(end_thread()));
 
-	start_of_exec.restart();
+
 	for( int i = 0; i < threads_count; ++i )
 		threads[i]->start();
 ///////////////
