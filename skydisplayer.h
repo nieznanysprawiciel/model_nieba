@@ -40,20 +40,21 @@ public:
 	explicit SkyDisplayer( int sizeX, int sizeY, QWidget *parent = 0 );
 
 	void generate_sky(int pixX, int pixY, float view_radius,
-					  double albiedoR, double albiedoG, double albiedoB,
-					  float horizontal_angle, float vertical_angle,
-					  float turbid);
+					  double* albiedo, float horizontal_angle,
+					  float vertical_angle, float turbid);
 
 	void save_image(QString& file_name);
 	inline int get_last_generation_time() { return last_generation_time; }
 
 
+	void set_version_spectral() { sky_model->set_model_version(VERSION_SPECTRAL); }
+	void set_version_RGB() { sky_model->set_model_version(VERSION_RGB); }
 	void set_sky_intensity(float);
 	void set_solar_intensity(float);
 	void set_solar_elevation(float elevation);
 	void set_dithering(int level);
 	void set_params(int pixX, int pixY, float view_angle,
-					double albedoR, double albedoG, double albedoB,
+					double *albedo,
 					float horizontal_angle, float vertical_angle,
 					float turbid);
 	inline void set_perspective_correction( bool value ){ sky_model->use_perspective_correction( value ); }

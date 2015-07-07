@@ -57,7 +57,7 @@ private:
 	float	gamma_correction;			///< Korekcja gamma dla całego obrazka.
 
 public:
-    CompleteSkyModel(int Version, int channels);
+	CompleteSkyModel();
     ~CompleteSkyModel();
 
     void init(int* buffer, int screen_sizeX,
@@ -72,6 +72,7 @@ public:
              double* albedo_table, double turbid,
              vec3 zenith, vec3 sun);
 
+	void set_model_version( unsigned int model_version ) { version = model_version; }
     void set_screen( int screen_sizeX, int screen_sizeY, int near_plane );
 	void set_sky_intensity(float intensity);
 	void set_solar_intensity(float intensity);
@@ -81,8 +82,7 @@ public:
 
     int* execute( quat & screen_rot );
     int* execute(int offset, int max ); //do wielowątkowego wykonania
-    //int* execute( quat & screen_rot, vec3 &sun );
-    //int* execute(quat & screen_rot, vec3 &sun, vec3 &zenith );
+
     inline unsigned short* get_R16_buffer() { return R16_buffer; }
     inline unsigned short* get_G16_buffer() { return G16_buffer; }
     inline unsigned short* get_B16_buffer() { return B16_buffer; }

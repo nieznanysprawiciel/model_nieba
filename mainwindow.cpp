@@ -230,21 +230,24 @@ void MainWindow::on_generate_clicked()
 	else
 		sky_display->set_dithering(0);
 
+	if( ui->UseSpectralVersion->isChecked() )
+		sky_display->set_version_spectral();
+	else
+		sky_display->set_version_RGB();
+
 	sky_display->set_gamma_correction( ui->gamma_correction->value() );
 
 	double albedo[9];
 	for( int i = 0; i < 9; ++i )
 		albedo[i] = albedo_spinboxes[i]->value();
 
-	sky_display->generate_sky(ui->sky_width->value(),
-							   ui->sky_height->value(),
-							   ui->SpinBox_view_angle->value(),
-							   albedo[0],
-							   albedo[1],
-							   albedo[2],
-							   ui->horizontalSlider_rotation->value(),
-							   ui->verticalSlider_rotation->value(),
-							   static_cast<float>( ui->SpinBox_turbidity->value() ));
+	sky_display->generate_sky(	ui->sky_width->value(),
+								ui->sky_height->value(),
+								ui->SpinBox_view_angle->value(),
+								albedo,
+								ui->horizontalSlider_rotation->value(),
+								ui->verticalSlider_rotation->value(),
+								static_cast<float>( ui->SpinBox_turbidity->value() ));
 }
 
 void MainWindow::save_file()

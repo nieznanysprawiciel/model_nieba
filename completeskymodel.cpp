@@ -12,30 +12,21 @@
  * VERSION_SPECTRAL -   wersja w pełni spektralna, w tym przypadku należy podać
  * liczbę kanałów channels
 */
-CompleteSkyModel::CompleteSkyModel(int Version, int channels)
+CompleteSkyModel::CompleteSkyModel()
 {
-    if( Version < 4 )
-        version = Version;
-    else
-        version = VERSION_ERROR;
-
-    if( version != VERSION_SPECTRAL )
-        num_channels = 3;
-    else
-		num_channels = channels;
+	num_channels = WAVE_LENGTHS;
+	version = VERSION_SPECTRAL;
 
     albedo = new double[num_channels];
 	channels_wave = NULL;
-	if( version == VERSION_SPECTRAL )
-	{
-		channels_wave = new double[num_channels];
-		for( int i = 0; i < WAVE_LENGTHS; ++i )
-		{
-			channels_wave[i] = 400 + i * 40;
-			albedo[i] = 0.8;
-		}
 
+	channels_wave = new double[num_channels];
+	for( int i = 0; i < WAVE_LENGTHS; ++i )
+	{
+		channels_wave[i] = 400 + i * 40;
+		albedo[i] = 0.8;
 	}
+
 
     skymodel_state = new ArHosekSkyModelState*[num_channels];
     for( int i=0; i<num_channels; ++i)

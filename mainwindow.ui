@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -991,7 +991,7 @@
                 <double>0.010000000000000</double>
                </property>
                <property name="value">
-                <double>5.500000000000000</double>
+                <double>3.500000000000000</double>
                </property>
               </widget>
              </item>
@@ -1120,7 +1120,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>290</y>
+            <y>300</y>
             <width>241</width>
             <height>131</height>
            </rect>
@@ -1283,7 +1283,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>430</y>
+            <y>440</y>
             <width>261</width>
             <height>221</height>
            </rect>
@@ -1328,7 +1328,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>0</y>
+            <y>10</y>
             <width>251</width>
             <height>281</height>
            </rect>
@@ -1610,7 +1610,7 @@
                <double>0.020000000000000</double>
               </property>
               <property name="value">
-               <double>2.400000000000000</double>
+               <double>2.200000000000000</double>
               </property>
              </widget>
             </item>
@@ -1636,7 +1636,6 @@
          <height>694</height>
         </rect>
        </property>
-       <zorder>tabWidget</zorder>
       </widget>
      </widget>
     </item>
