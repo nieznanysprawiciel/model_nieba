@@ -100,6 +100,8 @@ MainWindow::~MainWindow()
     delete sky_display;
 }
 
+/**Został zaznaczony RadioButton odpowiadający za włączenie wersji RGB.
+Wyłączamy odpowiednie przyciski i zmieniamy podpisy na etykietach.*/
 void MainWindow::version_RGB()
 {
 	for( unsigned int i = 3; i < 9; ++i )
@@ -114,6 +116,8 @@ void MainWindow::version_RGB()
 	albedo_labels[2]->setText("BLUE");
 }
 
+/**Został zaznaczony RadioButton odpowiadający za włączenie wersji spektralnej.
+Włączamy odpowiednie przyciski i zmieniamy podpisy na etykietach.*/
 void MainWindow::version_spectral()
 {
 	for( unsigned int i = 3; i < 9; ++i )
@@ -142,6 +146,8 @@ void MainWindow::dateTimeChanged()
 	ui->calendarWidget->setSelectedDate( selectedDate );
 }
 
+/**Funkcja zapewnia, że odpowiadające sobie SpinBoxy i slidery, będą
+modyfikowały swoje wartości.*/
 void MainWindow::value_changed(double value)
 {
 	int ret_value = (int)round( value * 100.0 );
@@ -176,6 +182,8 @@ void MainWindow::value_changed(double value)
 		ui->slider_longitude->setValue(ret_value);
 }
 
+/**Funkcja zapewnia, że odpowiadające sobie SpinBoxy i slidery, będą
+modyfikowały swoje wartości.*/
 void MainWindow::value_changed(int value)
 {
 	double ret_value = (double)value/(double)100;
@@ -219,24 +227,27 @@ odświeża okno do momentu zakończenia.
 */
 void MainWindow::on_generate_clicked()
 {
+	// Blokujemy możliwość genrowania nieba, do czasu gdy będzie już gotowe.
     ui->generate->setEnabled(false);
 
 	sky_display->set_sky_intensity((float)ui->sky_intensity_spinbox->value());
 	sky_display->set_solar_intensity((float)ui->solar_intensity_spinbox->value());
 	sky_display->set_solar_elevation((float)ui->SpinBox_solar_elevation->value());
+	sky_display->set_gamma_correction( ui->gamma_correction->value() );
 
+	// Włącza lub wyłącza dithering.
 	if( ui->dithering->isChecked() )
 		sky_display->set_dithering(1);
 	else
 		sky_display->set_dithering(0);
 
+	// Ustawia wersję modelu, która ma zostać użyta.
 	if( ui->UseSpectralVersion->isChecked() )
 		sky_display->set_version_spectral();
 	else
 		sky_display->set_version_RGB();
 
-	sky_display->set_gamma_correction( ui->gamma_correction->value() );
-
+	// Pobieramy wartości albedo. W wersji RGB zostaną użyte 3 pierwsze, pozostałe zostaną zignorowane.
 	double albedo[9];
 	for( int i = 0; i < 9; ++i )
 		albedo[i] = albedo_spinboxes[i]->value();
