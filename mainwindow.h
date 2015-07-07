@@ -2,10 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-//#include "DrawingArea.h"
-//#include "QtSkyDisplay.h"
 #include <QTimer>
 #include "skydisplayer.h"
+#include <QLabel>
+#include <QDoubleSpinBox>
+#include <QSlider>
 
 namespace Ui {
 class MainWindow;
@@ -21,8 +22,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
-	//DrawingArea* drawing_area;
 	SkyDisplayer* sky_display;
+
+	QLabel*				albedo_labels[9];
+	QDoubleSpinBox*		albedo_spinboxes[9];
+	QSlider*			albedo_sliders[9];
 
 public slots:
     void value_changed(double);
@@ -33,6 +37,9 @@ private slots:
 	void save_file();
 	void calendarChanged();
 	void dateTimeChanged();
+
+	void version_RGB();
+	void version_spectral();
 };
 
 #endif // MAINWINDOW_H

@@ -21,10 +21,52 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->scrollDrawingArea->setWidget(sky_display);
 
 
+	albedo_sliders[0] = ui->slider_albedo1;
+	albedo_sliders[1] = ui->slider_albedo2;
+	albedo_sliders[2] = ui->slider_albedo3;
+	albedo_sliders[3] = ui->slider_albedo4;
+	albedo_sliders[4] = ui->slider_albedo5;
+	albedo_sliders[5] = ui->slider_albedo6;
+	albedo_sliders[6] = ui->slider_albedo7;
+	albedo_sliders[7] = ui->slider_albedo8;
+	albedo_sliders[8] = ui->slider_albedo9;
+
+	albedo_spinboxes[0] = ui->SpinBox_albedo1;
+	albedo_spinboxes[1] = ui->SpinBox_albedo2;
+	albedo_spinboxes[2] = ui->SpinBox_albedo3;
+	albedo_spinboxes[3] = ui->SpinBox_albedo4;
+	albedo_spinboxes[4] = ui->SpinBox_albedo5;
+	albedo_spinboxes[5] = ui->SpinBox_albedo6;
+	albedo_spinboxes[6] = ui->SpinBox_albedo7;
+	albedo_spinboxes[7] = ui->SpinBox_albedo8;
+	albedo_spinboxes[8] = ui->SpinBox_albedo9;
+
+	albedo_labels[0] = ui->label_albedo1;
+	albedo_labels[1] = ui->label_albedo2;
+	albedo_labels[2] = ui->label_albedo3;
+	albedo_labels[3] = ui->label_albedo4;
+	albedo_labels[4] = ui->label_albedo5;
+	albedo_labels[5] = ui->label_albedo6;
+	albedo_labels[6] = ui->label_albedo7;
+	albedo_labels[7] = ui->label_albedo8;
+	albedo_labels[8] = ui->label_albedo9;
+
+	for( unsigned k = 0; k < 9; ++k )
+	{
+		int wave_length = 400 + k * 40;
+		albedo_labels[k]->setText( QString::number(wave_length) + " nm");
+	}
+
+	for( unsigned int i = 0; i < 9; ++i )
+	{
+		connect(albedo_sliders[i], SIGNAL(valueChanged(int)), this, SLOT(value_changed(int)));
+		connect(albedo_spinboxes[i], SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+	}
+
+	connect( ui->UseSpectralVersion, SIGNAL(clicked()), this, SLOT(version_spectral()));
+	connect( ui->UseRGBVersion, SIGNAL(clicked()), this, SLOT(version_RGB()));
+
     //slidery
-    connect(ui->slider_red,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
-    connect(ui->slider_green,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
-    connect(ui->slider_blue,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->sky_intensity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->solar_intensity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_solar_elevation,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
@@ -33,9 +75,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->slider_latitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_longitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
     //spinboxy
-    connect(ui->SpinBox_red,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
-    connect(ui->SpinBox_green,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
-    connect(ui->SpinBox_blue,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->sky_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->solar_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_solar_elevation,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
@@ -61,6 +100,36 @@ MainWindow::~MainWindow()
     delete sky_display;
 }
 
+void MainWindow::version_RGB()
+{
+	for( unsigned int i = 3; i < 9; ++i )
+	{
+		albedo_sliders[i]->setEnabled( false );
+		albedo_spinboxes[i]->setEnabled( false );
+		albedo_labels[i]->setEnabled( false );
+	}
+
+	albedo_labels[0]->setText("RED");
+	albedo_labels[1]->setText("GREEN");
+	albedo_labels[2]->setText("BLUE");
+}
+
+void MainWindow::version_spectral()
+{
+	for( unsigned int i = 3; i < 9; ++i )
+	{
+		albedo_sliders[i]->setEnabled( true );
+		albedo_spinboxes[i]->setEnabled( true );
+		albedo_labels[i]->setEnabled( true );
+	}
+
+	for( unsigned k = 0; k < 3; ++k )
+	{
+		int wave_length = 400 + k * 40;
+		albedo_labels[k]->setText( QString::number(wave_length) + " nm");
+	}
+}
+
 void MainWindow::calendarChanged()
 {
 	QDate selectedDate = ui->calendarWidget->selectedDate();
@@ -77,13 +146,21 @@ void MainWindow::value_changed(double value)
 {
 	int ret_value = (int)round( value * 100.0 );
 
-    if( sender() == ui->SpinBox_red )
-		ui->slider_red->setValue(ret_value);
-	else if( sender() == ui->SpinBox_green )
-		ui->slider_green->setValue(ret_value);
-	else if( sender() == ui->SpinBox_blue )
-		ui->slider_blue->setValue(ret_value);
-	else if( sender() == ui->sky_intensity_spinbox )
+	for( unsigned int i = 0; i < 9; ++i )
+		if( sender() == albedo_spinboxes[i] )
+		{
+			if( ui->BindAlbedoCheckBox->isChecked() )
+			{
+				for( unsigned int j = 0; j < 9; ++j )
+					albedo_sliders[j]->setValue( ret_value );
+			}
+			else
+				albedo_sliders[i]->setValue( ret_value );
+
+			return;
+		}
+
+	if( sender() == ui->sky_intensity_spinbox )
 		ui->sky_intensity->setValue(ret_value);
 	else if( sender() == ui->solar_intensity_spinbox )
 		ui->solar_intensity->setValue(ret_value);
@@ -103,13 +180,21 @@ void MainWindow::value_changed(int value)
 {
 	double ret_value = (double)value/(double)100;
 
-    if( sender() == ui->slider_red )
-		ui->SpinBox_red->setValue(ret_value);
-	else if( sender() == ui->slider_green )
-		ui->SpinBox_green->setValue(ret_value);
-	else if( sender() == ui->slider_blue )
-		ui->SpinBox_blue->setValue(ret_value);
-	else if( sender() == ui->sky_intensity )
+	for( unsigned int i = 0; i < 9; ++i )
+		if( sender() == albedo_sliders[i] )
+		{
+			if( ui->BindAlbedoCheckBox->isChecked() )
+			{
+				for( unsigned int j = 0; j < 9; ++j )
+					albedo_spinboxes[j]->setValue( ret_value );
+			}
+			else
+				albedo_spinboxes[i]->setValue( ret_value );
+
+			return;
+		}
+
+	if( sender() == ui->sky_intensity )
 		ui->sky_intensity_spinbox->setValue(ret_value);
 	else if( sender() == ui->solar_intensity )
 		ui->solar_intensity_spinbox->setValue(ret_value);
@@ -145,15 +230,18 @@ void MainWindow::on_generate_clicked()
 	else
 		sky_display->set_dithering(0);
 
-	sky_display->set_perspective_correction( ui->check_perspective_correction->isChecked() );
 	sky_display->set_gamma_correction( ui->gamma_correction->value() );
+
+	double albedo[9];
+	for( int i = 0; i < 9; ++i )
+		albedo[i] = albedo_spinboxes[i]->value();
 
 	sky_display->generate_sky(ui->sky_width->value(),
 							   ui->sky_height->value(),
 							   ui->SpinBox_view_angle->value(),
-							   ui->SpinBox_red->value(),
-							   ui->SpinBox_green->value(),
-							   ui->SpinBox_blue->value(),
+							   albedo[0],
+							   albedo[1],
+							   albedo[2],
 							   ui->horizontalSlider_rotation->value(),
 							   ui->verticalSlider_rotation->value(),
 							   static_cast<float>( ui->SpinBox_turbidity->value() ));
