@@ -5,6 +5,10 @@
 #include <QDateTime>
 #include <QCalendarWidget>
 
+
+#include "glm/glm.hpp"
+#include "glm/gtx/vector_angle.hpp"
+
 #define SIZE_X  900
 #define SIZE_Y  660
 
@@ -82,6 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->SpinBox_turbidity,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_latitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_longitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+
+	connect(ui->SpinBox_latitude,SIGNAL(valueChanged(double)),this,SLOT(latitudeChanged(double)));
+	connect(ui->SpinBox_longitude,SIGNAL(valueChanged(double)),this,SLOT(longitudeChanged(double)));
 	//actions
 	connect(ui->actionZapisz_obraz,SIGNAL(triggered()),this,SLOT(save_file()));
     //zakończenie generowania nieba
@@ -216,6 +223,43 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_latitude->setValue(ret_value);
 	else if( sender() == ui->slider_longitude )
 		ui->SpinBox_longitude->setValue(ret_value);
+}
+
+void MainWindow::latitudeChanged( double value )
+{
+	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
+	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+
+	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
+									ui->SpinBox_longitude->value(),
+									(float)seconds);
+	recomputeSunPosition();
+}
+
+void MainWindow::longitudeChanged( double value )
+{
+	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
+	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+
+	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
+									ui->SpinBox_longitude->value(),
+									(float)seconds);
+	recomputeSunPosition();
+}
+
+void MainWindow::recomputeSunPosition()
+{
+	glm::vec3 sun_direction = sun_position.computeSunDirection();
+	glm::vec3 zenith_direction( 0.0, 1.0, 0.0 );
+
+	double elevation = glm::angle( sun_direction, zenith_direction );
+
+	sun_direction.z = 0.0;
+	sun_direction = glm::normalize( sun_direction );
+	double vertical_angle = glm::angle( sun_direction, glm::vec3( 0.0, 0.0, -1.0 ) );
+
+	ui->SpinBox_solar_elevation->setValue( elevation );
+	ui->spinBox_horizontal->setValue( (int)vertical_angle );
 }
 
 /**@brief Funkcja wykonywana w reakcji na wciśnięcie przycisku do generowania nieba.

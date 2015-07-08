@@ -3,10 +3,12 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "skydisplayer.h"
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QSlider>
+
+#include "skydisplayer.h"
+#include "SunPosition.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +30,9 @@ private:
 	QDoubleSpinBox*		albedo_spinboxes[9];
 	QSlider*			albedo_sliders[9];
 
+	SunPosition			sun_position;
+
+	void recomputeSunPosition();
 public slots:
     void value_changed(double);
     void value_changed(int);
@@ -40,6 +45,9 @@ private slots:
 
 	void version_RGB();
 	void version_spectral();
+
+	void latitudeChanged( double value );
+	void longitudeChanged( double value );
 };
 
 #endif // MAINWINDOW_H

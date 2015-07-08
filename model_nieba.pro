@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     HosekWilkie_SkylightModel_C_Source.1.4a/SolarRadiance_RGB.cpp \
     sky_thread.cpp \
     skydisplayer.cpp \
-    spectral_to_RGB/SpectralConversion.cpp
+    spectral_to_RGB/SpectralConversion.cpp \
+    SunPosition.cpp
 
 HEADERS  += mainwindow.h \
     HosekWilkie_SkylightModel_C_Source.1.4a/ArHosekSkyModel.h \
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h \
     sky_thread.h \
     skydisplayer.h \
     spectral_to_RGB/CIEXYZ_distribution.h \
-    spectral_to_RGB/SpectralConversion.h
+    spectral_to_RGB/SpectralConversion.h \
+    SunPosition.h
 
 
 FORMS    += mainwindow.ui

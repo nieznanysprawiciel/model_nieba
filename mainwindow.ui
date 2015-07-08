@@ -1569,7 +1569,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_3">
+              <widget class="QSpinBox" name="spinBox_horizontal">
                <property name="minimum">
                 <number>-180</number>
                </property>
@@ -1682,7 +1682,7 @@
   <connection>
    <sender>horizontalSlider_rotation</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>spinBox_3</receiver>
+   <receiver>spinBox_horizontal</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1696,7 +1696,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>spinBox_3</sender>
+   <sender>spinBox_horizontal</sender>
    <signal>valueChanged(int)</signal>
    <receiver>horizontalSlider_rotation</receiver>
    <slot>setValue(int)</slot>

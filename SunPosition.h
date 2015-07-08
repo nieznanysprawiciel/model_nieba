@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include <glm/glm.hpp>
 #include <ctime>
 
 /**@brief Klasa Wylicza wektor w kierunku s³oñca dla obserwatora stoj¹cego na ziemi.*/
@@ -16,7 +16,7 @@ public:
 	SunPosition();
 	~SunPosition();
 
-	DirectX::XMVECTOR computeSunDirection();
+	glm::vec3 computeSunDirection();
 	void setSunConditions( float latit, float longit, tm* time );
 	void setSunConditions( float latit, float longit, double time );
 };
