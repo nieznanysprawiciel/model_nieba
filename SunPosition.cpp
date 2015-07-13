@@ -32,9 +32,9 @@ glm::vec3 SunPosition::computeSunDirection()
 	glm::quat earth_axis_rotation = glm::angleAxis( angle_around_earth, earth_axis );
 	glm::quat sun_axis_rotation = glm::angleAxis( -angle_around_sun, glm::vec3( 0.0, 1.0, 0.0 ) );
 
-	glm::quat all_rotations = glm::cross( zenith_axis_rotation, earth_axis_rotation );
-	all_rotations = glm::cross( all_rotations, latitude_rotation );
-	all_rotations = glm::cross( all_rotations, sun_axis_rotation );
+	glm::quat all_rotations = earth_axis_rotation * zenith_axis_rotation;
+	all_rotations = latitude_rotation * all_rotations;
+	all_rotations = sun_axis_rotation * all_rotations;
 
 	glm::mat4 apply_rotations = glm::toMat4( all_rotations );
 
@@ -43,11 +43,12 @@ glm::vec3 SunPosition::computeSunDirection()
 	change_base_matrix[1] = glm::vec4( zenith, 0.0 );
 	change_base_matrix[2] = glm::vec4( south, 0.0 );
 	change_base_matrix[3] = glm::vec4( 0.0, 0.0, 0.0, 0.0 );
-	change_base_matrix = apply_rotations * change_base_matrix;
-
 	change_base_matrix = glm::transpose( change_base_matrix );
 
-	return glm::vec3( glm::vec4( 0.0, 0.0, -1.0, 0.0 ) * change_base_matrix );
+	change_base_matrix = apply_rotations * change_base_matrix;
+
+
+	return glm::vec3( change_base_matrix * glm::vec4( 0.0, 0.0, -1.0, 0.0 ) );
 }
 
 void SunPosition::setSunConditions( float latit, float longit, tm* time )

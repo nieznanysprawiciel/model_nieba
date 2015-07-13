@@ -769,7 +769,7 @@ double arhosekskymodel_solar_radiance_internal2(
     for ( i = 0; i < 6; i++ )
         ldCoefficient[i] =
               (1.0 - wl_frac) * limbDarkeningDatasets[wl_low  ][i]
-            +        wl_frac  * limbDarkeningDatasets[wl_low+1][i];
+			+        wl_frac  * limbDarkeningDatasets[wl_low+1][i];
     
     // sun distance to diameter ratio, squared
 
@@ -797,6 +797,7 @@ double arhosekskymodel_solar_radiance_internal2(
         + ldCoefficient[5] * pow( sampleCosine, 5.0 );
 
     direct_radiance *= darkeningFactor;
+	assert( direct_radiance >= 0 );
 
     return direct_radiance;
 }

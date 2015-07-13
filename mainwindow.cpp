@@ -258,8 +258,8 @@ void MainWindow::recomputeSunPosition()
 	sun_direction = glm::normalize( sun_direction );
 	double vertical_angle = glm::angle( sun_direction, glm::vec3( 0.0, 0.0, -1.0 ) );
 
-	ui->SpinBox_solar_elevation->setValue( elevation );
-	ui->spinBox_horizontal->setValue( (int)vertical_angle );
+	ui->SpinBox_solar_elevation->setValue( glm::degrees( elevation ) );
+	ui->spinBox_horizontal->setValue( (int)glm::degrees( vertical_angle ) );
 }
 
 /**@brief Funkcja wykonywana w reakcji na wciśnięcie przycisku do generowania nieba.

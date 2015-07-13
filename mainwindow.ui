@@ -1300,6 +1300,13 @@
              <height>161</height>
             </rect>
            </property>
+           <property name="selectedDate">
+            <date>
+             <year>1970</year>
+             <month>1</month>
+             <day>1</day>
+            </date>
+           </property>
            <property name="horizontalHeaderFormat">
             <enum>QCalendarWidget::ShortDayNames</enum>
            </property>

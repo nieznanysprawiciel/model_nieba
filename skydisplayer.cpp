@@ -20,6 +20,7 @@ SkyDisplayer::SkyDisplayer( int sizeX, int sizeY, QWidget *parent ) :
 	sky_data.turbidity = 1;
 	dithering_level = 0;
 	ideal_threads = QThread::idealThreadCount();
+	//ideal_threads = 1;			// For debug
 	if( ideal_threads > THREADS )
 		ideal_threads = THREADS;
 
@@ -341,7 +342,7 @@ void SkyDisplayer::dithering(unsigned short* R, unsigned short* G, unsigned shor
 
 			for( int hor = 0; hor < hor_pix; ++hor )
 			{//przechodzimy obrazek w poziomie
-				short pixel = color_buff[vert*hor_pix + hor];		//pobieramy piksel
+				unsigned short pixel = color_buff[vert*hor_pix + hor];		//pobieramy piksel
 				float fpix = (float)pixel + error_table[hor];	//konwertujemy na float i dodajemy błąd
 
 				int pix;

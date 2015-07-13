@@ -311,12 +311,14 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 		G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
 		B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
-		if( gamma_correction != 1.0 )
-		{
-			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
-			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
-			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
-		}
+		R = clamp( R, 0.0, 255.0 );
+		G = clamp( G, 0.0, 255.0 );
+		B = clamp( B, 0.0, 255.0 );
+// gamma correction
+		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
+
 
         R16_buffer[i] = make_16bit( R );
         G16_buffer[i] = make_16bit( G );
@@ -505,12 +507,14 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
         G += solar_intensity * solar_radiance_RGB( skymodel_state[1], 1, (glm::half_pi<double>()-theta), gamma);
         B += solar_intensity * solar_radiance_RGB( skymodel_state[2], 2, (glm::half_pi<double>()-theta), gamma);
 
-		if( gamma_correction != 1.0 )
-		{
-			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
-			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
-			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
-		}
+		R = clamp( R, 0.0, 255.0 );
+		G = clamp( G, 0.0, 255.0 );
+		B = clamp( B, 0.0, 255.0 );
+
+// gamma correction
+		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
 
         R16_buffer[i] = make_16bit( R );
         G16_buffer[i] = make_16bit( G );
@@ -561,7 +565,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 				spectralValues[ j ] = SPECTRAL_SCALE * sky_intensity * arhosekskymodel_radiance( skymodel_state[ j ], theta, gamma, channels_wave[ j ] );
 
 			for( int j = 0; j < num_channels; ++j )
-				spectralValues[ j ] += SPECTRAL_SCALE * solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
+				spectralValues[ j ] += solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
 
 			R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
 			G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
@@ -574,12 +578,14 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 			B = 0.0;
 		}
 
-		if( gamma_correction != 1.0 )
-		{
-			R = 255 * pow( R / 255.0, 1.0/gamma_correction );
-			G = 255 * pow( G / 255.0, 1.0/gamma_correction );
-			B = 255 * pow( B / 255.0, 1.0/gamma_correction );
-		}
+		R = clamp( R, 0.0, 255.0 );
+		G = clamp( G, 0.0, 255.0 );
+		B = clamp( B, 0.0, 255.0 );
+
+// gamma correction
+		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
 
 		R16_buffer[i] = make_16bit( R );
 		G16_buffer[i] = make_16bit( G );
