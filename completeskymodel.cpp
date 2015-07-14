@@ -535,6 +535,8 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 	int     curX;
 	int     curY;
 
+	double sun_correction_factor = find_sun_correction_factor( sun_elevation );
+
 	//obliczamy pozycję początkową dla naszego wątku
 	curY = offset / screenX;        //dzielenie całkowite
 	curX = offset - curY*screenX;
@@ -565,7 +567,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 				spectralValues[ j ] = SPECTRAL_SCALE * sky_intensity * arhosekskymodel_radiance( skymodel_state[ j ], theta, gamma, channels_wave[ j ] );
 
 			for( int j = 0; j < num_channels; ++j )
-				spectralValues[ j ] += solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
+				spectralValues[ j ] += SPECTRAL_SCALE * solar_intensity * arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], glm::half_pi<double>()-theta, gamma );
 
 			R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
 			G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
@@ -650,4 +652,25 @@ void CompleteSkyModel::next_angles( glm::vec2 angle_step, glm::vec2 top_left_cor
 		currentX = 0, ++currentY;
 }
 
+
+double CompleteSkyModel::find_sun_correction_factor( double elevation )
+{
+	double R;
+	double G;
+	double B;
+	double spectralValues[num_channels];
+
+	// Sample sun in center.
+	for( int j = 0; j < num_channels; ++j )
+		spectralValues[ j ] = arhosekskymodel_solar_radiance_internal2( skymodel_state[ j ], channels_wave[ j ], elevation, 0.0 );
+
+	R = spectralConversion.convertRGB<RED_CHANNEL>( spectralValues );
+	G = spectralConversion.convertRGB<GREAN_CHANNEL>( spectralValues );
+	B = spectralConversion.convertRGB<BLUE_CHANNEL>( spectralValues );
+
+	double max_color = max( R, G );
+	max_color = max( max_color, B );
+
+	return 255.0 / max_color;
+}
 

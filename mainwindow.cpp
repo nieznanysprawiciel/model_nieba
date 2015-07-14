@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QCalendarWidget>
 
+#include <ctime>
+
 
 #include "glm/glm.hpp"
 #include "glm/gtx/vector_angle.hpp"
@@ -227,36 +229,43 @@ void MainWindow::value_changed(int value)
 
 void MainWindow::latitudeChanged( double value )
 {
-	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
-	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+//	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
+//	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+	QDateTime dateTime = ui->dateTimeEdit->dateTime();
+	time_t time = dateTime.toTime_t();
 
 	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
 									ui->SpinBox_longitude->value(),
-									(float)seconds);
+									gmtime( &time ));
 	recomputeSunPosition();
 }
 
 void MainWindow::longitudeChanged( double value )
 {
-	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
-	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+//	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
+//	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
+	QDateTime dateTime = ui->dateTimeEdit->dateTime();
+	time_t time = dateTime.toTime_t();
 
 	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
 									ui->SpinBox_longitude->value(),
-									(float)seconds);
+									gmtime( &time ));
 	recomputeSunPosition();
 }
 
 void MainWindow::recomputeSunPosition()
 {
-	glm::vec3 sun_direction = sun_position.computeSunDirection();
-	glm::vec3 zenith_direction( 0.0, 1.0, 0.0 );
+//	glm::vec3 sun_direction = sun_position.computeSunDirection();
+//	glm::vec3 zenith_direction( 0.0, 1.0, 0.0 );
 
-	double elevation = glm::angle( sun_direction, zenith_direction );
+//	double elevation = glm::angle( sun_direction, zenith_direction );
 
-	sun_direction.z = 0.0;
-	sun_direction = glm::normalize( sun_direction );
-	double vertical_angle = glm::angle( sun_direction, glm::vec3( 0.0, 0.0, -1.0 ) );
+//	sun_direction.z = 0.0;
+//	sun_direction = glm::normalize( sun_direction );
+//	double vertical_angle = glm::angle( sun_direction, glm::vec3( 0.0, 0.0, -1.0 ) );
+
+	double elevation = sun_position.computeElevation();
+	double vertical_angle = sun_position.computeAzimuth();
 
 	ui->SpinBox_solar_elevation->setValue( glm::degrees( elevation ) );
 	ui->spinBox_horizontal->setValue( (int)glm::degrees( vertical_angle ) );

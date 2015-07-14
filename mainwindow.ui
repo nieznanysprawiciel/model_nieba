@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -886,7 +886,7 @@
              <item>
               <widget class="QSlider" name="slider_solar_elevation">
                <property name="minimum">
-                <number>0</number>
+                <number>1</number>
                </property>
                <property name="maximum">
                 <number>9000</number>
@@ -901,6 +901,9 @@
              </item>
              <item>
               <widget class="QDoubleSpinBox" name="SpinBox_solar_elevation">
+               <property name="minimum">
+                <double>0.010000000000000</double>
+               </property>
                <property name="maximum">
                 <double>90.000000000000000</double>
                </property>
