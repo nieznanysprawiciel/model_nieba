@@ -314,7 +314,7 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 		R = clamp( R, 0.0, 255.0 );
 		G = clamp( G, 0.0, 255.0 );
 		B = clamp( B, 0.0, 255.0 );
-// gamma correction
+// gamma correction przenieść do SkyDisplayer
 		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
 		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
 		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
@@ -511,7 +511,7 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
 		G = clamp( G, 0.0, 255.0 );
 		B = clamp( B, 0.0, 255.0 );
 
-// gamma correction
+// gamma correction przenieść do SkyDisplayer
 		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
 		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
 		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
@@ -584,7 +584,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 		G = clamp( G, 0.0, 255.0 );
 		B = clamp( B, 0.0, 255.0 );
 
-// gamma correction
+// gamma correction przenieść do SkyDisplayer
 		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
 		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
 		B = 255 * pow( B / 255.0, 1.0/gamma_correction );

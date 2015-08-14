@@ -18,6 +18,16 @@ SunPosition::~SunPosition()
 {
 }
 
+double computeStandardMeridian( double longitude )
+{
+	double i = -187.5;
+	for( ; i < longitude; i += 15 );
+	i -= 7.5;
+
+	if( i < -170 )
+		return abs( i );
+	return (double)i;
+}
 
 double SunPosition::computeAzimuth()
 {
@@ -34,11 +44,12 @@ void SunPosition::setSunConditions( float latit, float longit, tm* time )
 	mktime( time );
 
 	// Czas standardowy w godzinach
+	double standardMeridian = computeStandardMeridian( longit );
 	double standard_time = time->tm_hour + time->tm_min / 60.0 + time->tm_sec / 3600.0;
 	double julian_day = time->tm_yday + 1;
 	double solar_time = standard_time + 0.17*sin( 4* M_PI * ( julian_day - 80 ) / 373.0 );
 	solar_time -= 0.129 * ( 2 * M_PI * ( julian_day - 8 ) / 355 );
-	//solar_time +=	time_zone
+	solar_time += 12 * ( standardMeridian - longit ) / M_PI;
 
 	m_solarDeclination = 0.4093 * sin( 2 * M_PI * ( julian_day - 81 ) / 368.0 );
 

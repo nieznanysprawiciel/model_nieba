@@ -74,9 +74,9 @@ public:
 
 	void set_model_version( unsigned int model_version ) { version = model_version; }
     void set_screen( int screen_sizeX, int screen_sizeY, int near_plane );
-	void set_sky_intensity(float intensity);
-	void set_solar_intensity(float intensity);
-    void set_rotation(quat & screen_rot);      //do wielowątkowych funkcji
+	void set_sky_intensity( float intensity );
+	void set_solar_intensity( float intensity );
+	void set_rotation( quat & screen_rot );      //do wielowątkowych funkcji
 	inline void set_gamma_correction( float value ) { gamma_correction = value; }
 	inline void use_perspective_correction( bool set ) { perspective_correction = set; }
 
@@ -91,8 +91,8 @@ private:        //funkcje pomocnicze
     void init_HosekWilkie_model(double solarElevation);
     void clear_HosekWilkie_model();
     void generate_sky_RGB_XYZ();
-    void generate_sky_RGB_XYZ(unsigned int offset, unsigned int max);
-	void generate_sky_spectral(unsigned int offset, unsigned int max);
+	void generate_sky_RGB_XYZ( unsigned int offset, unsigned int max );
+	void generate_sky_spectral( unsigned int offset, unsigned int max );
     void calculate_sun_elevation();
 
     void screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
@@ -106,9 +106,9 @@ private:        //funkcje pomocnicze
 	void next_angles(	glm::vec2 angle_step, glm::vec2 top_left_corner,
 						double& theta, double& gamma,
 						int & currentX, int & currentY );
-	double find_sun_correction_factor(double elevation);
-    unsigned int make_RGB(double& R, double& G, double& B);
-    unsigned short make_16bit(double& color);
+	double find_sun_correction_factor( double elevation );
+	unsigned int make_RGB( double& R, double& G, double& B );
+	unsigned short make_16bit( double& color );
 
     void set_albedo( double* albedo_table );
     void set_turbidity( double new_turbidity );

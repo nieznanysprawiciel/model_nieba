@@ -245,6 +245,7 @@ void MainWindow::longitudeChanged( double value )
 //	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
 //	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
 	QDateTime dateTime = ui->dateTimeEdit->dateTime();
+	dateTime = dateTime.toLocalTime();
 	time_t time = dateTime.toTime_t();
 
 	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
@@ -264,8 +265,10 @@ void MainWindow::recomputeSunPosition()
 //	sun_direction = glm::normalize( sun_direction );
 //	double vertical_angle = glm::angle( sun_direction, glm::vec3( 0.0, 0.0, -1.0 ) );
 
-	double elevation = sun_position.computeElevation();
 	double vertical_angle = sun_position.computeAzimuth();
+	double elevation = sun_position.computeElevation();
+	if( elevation < 0 )
+		elevation = 0.0;
 
 	ui->SpinBox_solar_elevation->setValue( glm::degrees( elevation ) );
 	ui->spinBox_horizontal->setValue( (int)glm::degrees( vertical_angle ) );

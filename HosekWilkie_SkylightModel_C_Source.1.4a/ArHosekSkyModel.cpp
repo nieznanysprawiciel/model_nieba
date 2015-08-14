@@ -797,7 +797,7 @@ double arhosekskymodel_solar_radiance_internal2(
         + ldCoefficient[5] * pow( sampleCosine, 5.0 );
 
     direct_radiance *= darkeningFactor;
-	assert( direct_radiance >= 0 );
+	//assert( direct_radiance >= 0 );
 
     return direct_radiance;
 }
