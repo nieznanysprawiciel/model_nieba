@@ -41,7 +41,7 @@ private slots:
     void generation_ended();
 	void save_file();
 	void calendarChanged();
-	void dateTimeChanged();
+	void dateTimeEditChanged();
 
 	void version_RGB();
 	void version_spectral();

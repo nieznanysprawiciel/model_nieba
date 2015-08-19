@@ -3,12 +3,12 @@
 //#include <DirectXMath.h>
 #include <ctime>
 
-/**@brief Klasa Wylicza wektor w kierunku s³oñca dla obserwatora stoj¹cego na ziemi.*/
+/**@brief Klasa Wylicza wektor w kierunku sï¿½oï¿½ca dla obserwatora stojï¿½cego na ziemi.*/
 class SunPosition
 {
 private:
-	float		m_latitude;					///< Szerokoœæ geograficzna na jakiej znajduje siê obserwator.
-	float		m_longitude;					///< D³ugoœæ geograficzna obserwatora.
+	float		m_latitude;					///< Szerokoï¿½ï¿½ geograficzna na jakiej znajduje siï¿½ obserwator.
+	float		m_longitude;					///< Dï¿½ugoï¿½ï¿½ geograficzna obserwatora.
 
 	double		m_solarDeclination;
 	double		m_daytime;
@@ -19,7 +19,7 @@ public:
 	double computeAzimuth();
 	double computeElevation();
 
-	void setSunConditions( float latit, float longit, tm* time );
-	void setSunConditions( float latit, float longit, double time );
+	double setSunConditions( float latit, float longit, tm* time );
+	void setSunConditions(double time );
 };
 

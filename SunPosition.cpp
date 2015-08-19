@@ -31,7 +31,8 @@ double computeStandardMeridian( double longitude )
 
 double SunPosition::computeAzimuth()
 {
-	return atan2( -cos( m_solarDeclination ) * sin( M_PI * m_daytime / 12.0 ), cos( m_latitude ) * sin( m_solarDeclination ) - sin( m_latitude ) * cos( m_solarDeclination ) * cos( M_PI * m_daytime / 12.0 ) );
+	double translateFun = -M_PI;
+	return atan2( -cos( m_solarDeclination ) * sin( M_PI * m_daytime / 12.0 - translateFun ), ( cos( m_latitude ) * sin( m_solarDeclination ) - sin( m_latitude ) * cos( m_solarDeclination ) * cos( M_PI * m_daytime / 12.0 - translateFun ) ) );
 }
 
 double SunPosition::computeElevation()
@@ -39,27 +40,29 @@ double SunPosition::computeElevation()
 	return asin( sin( m_latitude ) * sin( m_solarDeclination ) - cos( m_latitude ) * cos( m_solarDeclination ) * cos( M_PI * m_daytime / 12.0 ) );
 }
 
-void SunPosition::setSunConditions( float latit, float longit, tm* time )
+double SunPosition::setSunConditions( float latit, float longit, tm* time )
 {
 	mktime( time );
 
+	m_latitude = static_cast<float>( latit *  M_PI / 180 );
+	m_longitude = static_cast<float>( longit *  M_PI / 180 );
+
 	// Czas standardowy w godzinach
-	double standardMeridian = computeStandardMeridian( longit );
+	double standardMeridian = computeStandardMeridian( longit ) *  M_PI / 180;
 	double standard_time = time->tm_hour + time->tm_min / 60.0 + time->tm_sec / 3600.0;
 	double julian_day = time->tm_yday + 1;
-	double solar_time = standard_time + 0.17*sin( 4* M_PI * ( julian_day - 80 ) / 373.0 );
+	double solar_time = standard_time + 0.17*sin( 4 * M_PI * ( julian_day - 80 ) / 373.0 );
 	solar_time -= 0.129 * ( 2 * M_PI * ( julian_day - 8 ) / 355 );
-	solar_time += 12 * ( standardMeridian - longit ) / M_PI;
+	solar_time += 12 * ( standardMeridian - m_longitude ) / M_PI;
 
-	m_solarDeclination = 0.4093 * sin( 2 * M_PI * ( julian_day - 81 ) / 368.0 );
+	m_solarDeclination = 0.4093 * sin( 2 * M_PI * ( julian_day - 81 ) / 365.0 );
 
-	setSunConditions( latit, longit, solar_time );
+	setSunConditions( solar_time );
+	return solar_time;
 }
 
-void SunPosition::setSunConditions( float latit, float longit, double time )
+void SunPosition::setSunConditions( double time )
 {
-	m_latitude = latit;
-	m_longitude = longit;
 	m_daytime = time;
 }
 

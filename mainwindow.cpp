@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//kalendarz
 	connect(ui->calendarWidget, SIGNAL(selectionChanged()), this, SLOT(calendarChanged()) );
-	connect(ui->dateTimeEdit, SIGNAL(dateChanged(QDate)), this,SLOT(dateTimeChanged()) );
+	connect(ui->dateTimeEdit, SIGNAL(dateTimeChanged(QDateTime)), this,SLOT(dateTimeEditChanged()) );
 
 	ui->dateTimeEdit->setDate(ui->calendarWidget->selectedDate());	// Ustawiamy czas, żeby był ten sam w obu kontrolkach.
 }
@@ -147,12 +147,14 @@ void MainWindow::calendarChanged()
 {
 	QDate selectedDate = ui->calendarWidget->selectedDate();
 	ui->dateTimeEdit->setDate( selectedDate );
+	latitudeChanged( 0.0 );		// Value not used
 }
 
-void MainWindow::dateTimeChanged()
+void MainWindow::dateTimeEditChanged()
 {
 	QDate selectedDate = ui->dateTimeEdit->date();
 	ui->calendarWidget->setSelectedDate( selectedDate );
+	latitudeChanged( 0.0 );		// Value not used
 }
 
 /**Funkcja zapewnia, że odpowiadające sobie SpinBoxy i slidery, będą

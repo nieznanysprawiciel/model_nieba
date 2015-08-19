@@ -1305,9 +1305,16 @@
            </property>
            <property name="selectedDate">
             <date>
+             <year>2015</year>
+             <month>8</month>
+             <day>14</day>
+            </date>
+           </property>
+           <property name="minimumDate">
+            <date>
              <year>1970</year>
-             <month>1</month>
-             <day>1</day>
+             <month>9</month>
+             <day>14</day>
             </date>
            </property>
            <property name="horizontalHeaderFormat">
