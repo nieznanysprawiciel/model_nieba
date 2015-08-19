@@ -42,6 +42,23 @@ SpaceTransform SpectralConversion::getRGBTransformMatrix( ColorSpaceRGB colorSpa
 	}
 }
 
+void SpectralConversion::setDestinationColorSpace( ColorSpaceRGB space )
+{
+	m_destColorSpace = space;
+
+	buildConversionRGB();
+}
+
+void SpectralConversion::setColorMatchingFunction( SpectralCoefficients cmf )
+{
+	m_colorMatchingFunction = cmf;
+
+	buildConversionXYZ();
+	buildConversionRGB();
+}
+
+//===========================================================//
+//						constructor							//
 SpectralConversion::SpectralConversion()
 {
 	buildConversionXYZ();

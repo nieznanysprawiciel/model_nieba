@@ -43,14 +43,17 @@ private:
 	SpectralCoefficients	m_colorMatchingFunction;
 
 protected:
-	void buildConversionRGB();
-	void buildConversionXYZ();
+	void				buildConversionRGB();
+	void				buildConversionXYZ();
 public:
 	SpectralConversion();
 
-	double* getConeFundamentals( SpectralCoefficients spectralCoefficientsEnum );
-	SpaceTransform getXYZTransformMatrix( SpectralCoefficients spectralCoefficientsEnum );
-	SpaceTransform getRGBTransformMatrix( ColorSpaceRGB colorSpaceEnum );
+	void				setDestinationColorSpace( ColorSpaceRGB space );
+	void				setColorMatchingFunction( SpectralCoefficients cmf );
+
+	double*				getConeFundamentals( SpectralCoefficients spectralCoefficientsEnum );
+	SpaceTransform		getXYZTransformMatrix( SpectralCoefficients spectralCoefficientsEnum );
+	SpaceTransform		getRGBTransformMatrix( ColorSpaceRGB colorSpaceEnum );
 
 	template<unsigned int channel>
 	double convertRGB( double* wavesTable );

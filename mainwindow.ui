@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -73,6 +73,12 @@
              <width>251</width>
              <height>311</height>
             </rect>
+           </property>
+           <property name="toolTip">
+            <string>Ustaw stopień w jakim Ziemia odbija promieniowanie dla poszczególnych barw.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>3000</number>
            </property>
            <property name="title">
             <string>albedo</string>
@@ -701,6 +707,12 @@
               <height>17</height>
              </rect>
             </property>
+            <property name="toolTip">
+             <string>Suwaki regulujące albedo będą przesuwały się razem.</string>
+            </property>
+            <property name="toolTipDuration">
+             <number>5000</number>
+            </property>
             <property name="text">
              <string>Zwiąż wartości</string>
             </property>
@@ -971,6 +983,12 @@
              </item>
              <item>
               <widget class="QSlider" name="sky_intensity">
+               <property name="toolTip">
+                <string>Dopasuj jasność nieba (nie rozjaśnia Słońca).</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>5000</number>
+               </property>
                <property name="minimum">
                 <number>0</number>
                </property>
@@ -987,6 +1005,12 @@
              </item>
              <item>
               <widget class="QDoubleSpinBox" name="sky_intensity_spinbox">
+               <property name="toolTip">
+                <string>Dopasuj jasność nieba (nie rozjaśnia Słońca).</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>5000</number>
+               </property>
                <property name="maximum">
                 <double>100.000000000000000</double>
                </property>
@@ -1041,6 +1065,12 @@
              </item>
              <item>
               <widget class="QSlider" name="solar_intensity">
+               <property name="toolTip">
+                <string>Dopasuj jasność Słońca (nie modyfikuje jasności nieba).</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>5000</number>
+               </property>
                <property name="minimum">
                 <number>0</number>
                </property>
@@ -1079,6 +1109,12 @@
              <width>251</width>
              <height>61</height>
             </rect>
+           </property>
+           <property name="toolTip">
+            <string>Decyduje czy używać gotowych współczynników dla przestrzeni barw RGB czy wygenerować obraz w pełnym spektrum i skonwertować.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>7000</number>
            </property>
            <property name="title">
             <string>Wersja modelu nieba</string>
@@ -1161,6 +1197,12 @@
                  <height>0</height>
                 </size>
                </property>
+               <property name="toolTip">
+                <string>Podaj szerokość geograficzną obserwatora. Automatycznie modyfikuje obrót w poziomie i wysokość Słońca.</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>7000</number>
+               </property>
                <property name="minimum">
                 <number>-9000</number>
                </property>
@@ -1188,6 +1230,12 @@
                  <width>47</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="toolTip">
+                <string>Podaj szerokość geograficzną obserwatora. Automatycznie modyfikuje obrót w poziomie i wysokość Słońca.</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>7000</number>
                </property>
                <property name="minimum">
                 <double>-90.000000000000000</double>
@@ -1235,6 +1283,12 @@
                  <width>120</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="toolTip">
+                <string>Podaj długość geograficzną, na jakiej znajduje się obserwator. Automatycznie modyfikuje obrót w poziomie i wysokość Słońca.</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>7000</number>
                </property>
                <property name="minimum">
                 <number>-18000</number>
@@ -1303,6 +1357,12 @@
              <height>161</height>
             </rect>
            </property>
+           <property name="toolTip">
+            <string>Podaj datę, dla jakiej ma być wyliczona pozycja Słońca. Automatycznie aktualizuje wysokość Słońca, obrót w poziomie i datę.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>7000</number>
+           </property>
            <property name="selectedDate">
             <date>
              <year>2015</year>
@@ -1332,6 +1392,12 @@
              <width>194</width>
              <height>22</height>
             </rect>
+           </property>
+           <property name="toolTip">
+            <string>Wpisz datę dla której ma zostac ustawiona pozycja Słońca. Automatycznie aktualizuje obrót w poziomie, kalendarz i wysokość Słońca.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>7000</number>
            </property>
            <property name="dateTime">
             <datetime>
@@ -1375,6 +1441,12 @@
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
              <widget class="QSlider" name="verticalSlider_rotation">
+              <property name="toolTip">
+               <string>Obrót widoku w pionie.</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>5000</number>
+              </property>
               <property name="minimum">
                <number>-90</number>
               </property>
@@ -1391,6 +1463,12 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_2">
+              <property name="toolTip">
+               <string>Obrót widoku w pionie.</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>5000</number>
+              </property>
               <property name="minimum">
                <number>-90</number>
               </property>
@@ -1413,6 +1491,12 @@
              <height>17</height>
             </rect>
            </property>
+           <property name="toolTip">
+            <string>Użyj ditheringu jeżeli przejścia między barwami nie są płynne.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>5000</number>
+           </property>
            <property name="text">
             <string>dithering</string>
            </property>
@@ -1428,6 +1512,12 @@
              <width>181</width>
              <height>51</height>
             </rect>
+           </property>
+           <property name="toolTip">
+            <string>Kąt widzenia jest liczony po przekątnej ekranu.</string>
+           </property>
+           <property name="toolTipDuration">
+            <number>4000</number>
            </property>
            <property name="title">
             <string>kąt widzenia</string>
@@ -1584,6 +1674,12 @@
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
               <widget class="QSlider" name="horizontalSlider_rotation">
+               <property name="toolTip">
+                <string>Obrót widoku w poziomie.</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>5000</number>
+               </property>
                <property name="minimum">
                 <number>-180</number>
                </property>
@@ -1597,6 +1693,12 @@
              </item>
              <item>
               <widget class="QSpinBox" name="spinBox_horizontal">
+               <property name="toolTip">
+                <string>Obrót widoku w poziomie.</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>5000</number>
+               </property>
                <property name="minimum">
                 <number>-180</number>
                </property>
@@ -1645,6 +1747,107 @@
           </widget>
          </widget>
         </widget>
+        <widget class="QWidget" name="colorSpace">
+         <attribute name="title">
+          <string>Barwy</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>241</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>Wybór funkcji dopasowania kolorów przy konwersji spektrum światła widzialnego do przestrzeni RGB.</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>5000</number>
+          </property>
+          <property name="title">
+           <string>Konwersja spektralna</string>
+          </property>
+          <widget class="QRadioButton" name="radioButton">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>30</y>
+             <width>82</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>CIE 1931</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="radioButton_2">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>60</y>
+             <width>82</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>CIE 2006</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>110</y>
+            <width>241</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>Docelowa przestrzeń barw RGB. Działa tylko w przypadku użycia wersji spektralnej.</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>5000</number>
+          </property>
+          <property name="title">
+           <string>Przestrzeń barw RGB</string>
+          </property>
+          <widget class="QRadioButton" name="radioButton_3">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>30</y>
+             <width>82</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>sRGB</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="radioButton_4">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>60</y>
+             <width>82</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>CIE RGB</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </widget>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1663,6 +1866,7 @@
          <height>694</height>
         </rect>
        </property>
+       <zorder>tabWidget</zorder>
       </widget>
      </widget>
     </item>
@@ -1707,6 +1911,38 @@
  <resources/>
  <connections>
   <connection>
+   <sender>spinBox_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>verticalSlider_rotation</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>268</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>238</x>
+     <y>483</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>verticalSlider_rotation</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBox_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>238</x>
+     <y>483</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>509</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>horizontalSlider_rotation</sender>
    <signal>valueChanged(int)</signal>
    <receiver>spinBox_horizontal</receiver>
@@ -1735,38 +1971,6 @@
     <hint type="destinationlabel">
      <x>205</x>
      <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>verticalSlider_rotation</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>238</x>
-     <y>483</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>509</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>verticalSlider_rotation</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>268</x>
-     <y>509</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>483</y>
     </hint>
    </hints>
   </connection>
