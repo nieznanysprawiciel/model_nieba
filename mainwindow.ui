@@ -1333,6 +1333,16 @@
              <height>22</height>
             </rect>
            </property>
+           <property name="dateTime">
+            <datetime>
+             <hour>14</hour>
+             <minute>0</minute>
+             <second>0</second>
+             <year>2000</year>
+             <month>1</month>
+             <day>1</day>
+            </datetime>
+           </property>
            <property name="currentSection">
             <enum>QDateTimeEdit::YearSection</enum>
            </property>

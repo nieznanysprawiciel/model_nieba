@@ -1,12 +1,10 @@
 
-//wybierz tylko jedną z opcji inaczej się nie skompiluje
-//#define CIE1931
-#define CIE2006
-
 
 //2-deg LMS fundamentals based on the Stiles and Burch 10-deg CMFs adjusted to 2-deg
 //Dane pochodzą ze strony http://cvrl.ioo.ucl.ac.uk/ciepr8dp.htm
-#ifdef CIE2006
+namespace CIE2006
+{
+
 // double XYZ_cone_fundamentals[] =
 // {
 // 390.0,4.15003360E-04,3.68349248E-04,9.54728799E-03,
@@ -99,12 +97,14 @@
 // 825.0,1.30240694E-06,1.25508416E-07,0,
 // 830.0,9.74306403E-07,9.53411481E-08,0
 // };
-#endif
+
+}
 
 //2-deg matching functions coefficients
 //1931 2° CIE Standard http://www.cis.rit.edu/research/mcsl2/online/cie.php
+namespace CIE1931
+{
 
-#ifdef CIE1931
 double XYZ_cone_fundamentals[] =
 {
 390,1.078100e-002,8.000000e-004,4.925000e-002,
@@ -197,13 +197,14 @@ double XYZ_cone_fundamentals[] =
 825,1.637700e-006,6.356400e-007,1.547600e-010,
 
 };
-#endif
+
+}
 
 
 
+namespace CIE2006
+{
 
-
-#ifdef CIE2006
 double XYZ_cone_fundamentals[] =
 {
 390,2.952420E-03,4.076779E-04,1.318752E-02,
@@ -297,9 +298,14 @@ double XYZ_cone_fundamentals[] =
 830,1.579199E-06,6.345380E-07,0.000000E+00,
 
 };
-#endif
 
-#ifdef CIE2006
+}
+
+
+namespace CIE2006
+{
+
+// Dla współczynników LMS, a nie CMF.
 // double XYZtrans_params[3][3] =
 // {
 	// {1.94735469,	-1.41445123,	0.36476327},
@@ -313,9 +319,11 @@ double XYZtrans_params[3][3] =
 	{0.0,	1.0,    0.0},
 	{0.0,   0.0,    1.0}
 };
-#endif // CIE2006
 
-#ifdef CIE1931
+}
+
+namespace CIE1931
+{
 
 double XYZtrans_params[3][3] =
 {//współczynniki są zapisane bezpośrednio w postaci docelowej, nie musimy skalować
@@ -324,16 +332,12 @@ double XYZtrans_params[3][3] =
 	{0.0,   0.0,    1.0}
 };
 
-#endif // CIE1931
+}
 
 
-// double RGBtrans_params[3][3] =
-// {//linear transform
-    // {3.2406,        -1.5372,        -0.4986},
-    // {-0.9689,       1.8758,         0.0415},
-    // {0.0557,        -0.2040,        1.0570}
-// };
-
+namespace COLORSPACE_sRGB
+{
+// sRGB
 //http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
 double RGBtrans_params[3][3] =
 {//linear transform
@@ -341,3 +345,19 @@ double RGBtrans_params[3][3] =
 	{-0.9692660,	1.8760108,		0.0415560},
 	{0.0556434,		-0.2040259,		1.0572252}
 };
+
+}
+
+
+namespace COLORSPACE_CIERGB
+{
+// CIE RGB
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{2.3706743,		-0.9000405,		-0.4706338},
+	{-0.5138850,	1.4253036,		0.0885814},
+	{0.0052982,		-0.0146949,		1.0093968}
+};
+
+}

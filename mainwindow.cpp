@@ -229,7 +229,7 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_longitude->setValue(ret_value);
 }
 
-void MainWindow::latitudeChanged( double value )
+void MainWindow::latitudeChanged( double /*value*/ )
 {
 //	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
 //	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );
@@ -242,7 +242,7 @@ void MainWindow::latitudeChanged( double value )
 	recomputeSunPosition();
 }
 
-void MainWindow::longitudeChanged( double value )
+void MainWindow::longitudeChanged( double /*value*/ )
 {
 //	QDateTime dateTime( QDate(1970,1,1), QTime(0,0,0) );
 //	unsigned int seconds = dateTime.secsTo( ui->dateTimeEdit->dateTime() );

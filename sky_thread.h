@@ -2,6 +2,9 @@
 #define SKY_THREAD_H
 
 #include <QThread>
+
+//żeby było mniej komunikatów
+#define GLM_FORCE_RADIANS
 #include "glm/gtx/quaternion.hpp"
 
 

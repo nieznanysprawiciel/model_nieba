@@ -13,6 +13,21 @@
 #define Y				1
 #define Z				2
 
+
+typedef double (*SpaceTransform)[3];
+
+typedef enum ColorSpaceRGB
+{
+	ColorSpace_sRGB,
+	ColorSpace_CIERGB
+} ColorSpaceRGB;
+
+typedef enum
+{
+	CMF_CIE1931			= 0,
+	CMF_CIE2006			= 1
+} SpectralCoefficients;
+
 /**@brief Konwertuje kolor z wersji spektralnej do RGB lub XYZ.
 
 Na razie działa tylko dla wybranych długości fali.
@@ -21,14 +36,21 @@ zaimpementuje ogólniejsze algorytmy.*/
 class SpectralConversion
 {
 private:
-	double			m_transformMatrix[COEFFICIENTS][3];
-	double			m_CMF[COEFFICIENTS][3];
+	double					m_transformMatrix[COEFFICIENTS][3];
+	double					m_CMF[COEFFICIENTS][3];
+
+	ColorSpaceRGB			m_destColorSpace;
+	SpectralCoefficients	m_colorMatchingFunction;
 
 protected:
 	void buildConversionRGB();
 	void buildConversionXYZ();
 public:
 	SpectralConversion();
+
+	double* getConeFundamentals( SpectralCoefficients spectralCoefficientsEnum );
+	SpaceTransform getXYZTransformMatrix( SpectralCoefficients spectralCoefficientsEnum );
+	SpaceTransform getRGBTransformMatrix( ColorSpaceRGB colorSpaceEnum );
 
 	template<unsigned int channel>
 	double convertRGB( double* wavesTable );

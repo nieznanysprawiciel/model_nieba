@@ -3,6 +3,45 @@
 
 
 
+double* SpectralConversion::getConeFundamentals( SpectralCoefficients spectralCoefficientsEnum )
+{
+	switch( spectralCoefficientsEnum )
+	{
+		case CMF_CIE1931:
+			return CIE1931::XYZ_cone_fundamentals;
+		case CMF_CIE2006:
+			return CIE2006::XYZ_cone_fundamentals;
+		default:
+			return CIE1931::XYZ_cone_fundamentals;
+	}
+}
+
+SpaceTransform SpectralConversion::getXYZTransformMatrix( SpectralCoefficients spectralCoefficientsEnum )
+{
+	switch( spectralCoefficientsEnum )
+	{
+		case CMF_CIE1931:
+			return CIE1931::XYZtrans_params;
+		case CMF_CIE2006:
+			return CIE2006::XYZtrans_params;
+		default:
+			return CIE1931::XYZtrans_params;
+	}
+}
+
+SpaceTransform SpectralConversion::getRGBTransformMatrix( ColorSpaceRGB colorSpaceEnum )
+{
+	switch( colorSpaceEnum )
+	{
+		case ColorSpace_sRGB:
+			return COLORSPACE_sRGB::RGBtrans_params;
+		case ColorSpace_CIERGB:
+			return COLORSPACE_CIERGB::RGBtrans_params;
+		default:
+			return COLORSPACE_CIERGB::RGBtrans_params;
+	}
+}
+
 SpectralConversion::SpectralConversion()
 {
 	buildConversionXYZ();
@@ -11,6 +50,9 @@ SpectralConversion::SpectralConversion()
 
 void SpectralConversion::buildConversionXYZ()
 {
+	double* XYZ_cone_fundamentals = getConeFundamentals( m_colorMatchingFunction );
+	SpaceTransform XYZtrans_params = getXYZTransformMatrix( m_colorMatchingFunction );
+
 	//wype³niamy tablicê przeliczników
 	for( int i = 0; i < COEFFICIENTS; ++i )
 	{//chodzimy po d³ugoœciach fali
@@ -32,6 +74,8 @@ void SpectralConversion::buildConversionXYZ()
 
 void SpectralConversion::buildConversionRGB()
 {
+	SpaceTransform RGBtrans_params = getRGBTransformMatrix( m_destColorSpace );
+
 	for( int i = 0; i < COEFFICIENTS; ++i )
 	{
 		for( int j = 0; j < 3; ++j )

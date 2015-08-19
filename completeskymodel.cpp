@@ -535,7 +535,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 	int     curX;
 	int     curY;
 
-	double sun_correction_factor = find_sun_correction_factor( sun_elevation );
+	//double sun_correction_factor = find_sun_correction_factor( sun_elevation );
 
 	//obliczamy pozycję początkową dla naszego wątku
 	curY = offset / screenX;        //dzielenie całkowite
