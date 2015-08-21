@@ -48,8 +48,9 @@ private:
 	vec3    zenith_direction;	///<wektor w kierunku zenitu
 
 	ArHosekSkyModelState**		skymodel_state;
+public:
 	SpectralConversion			spectralConversion;
-
+private:
 	int     currentX;		///<zmienne dla funkcji next_angles (wersja jednowątkowa)
 	int     currentY;		///<aktualnie przetwarzany piksel ekranu (wersja jednowątkowa)
 

@@ -18,8 +18,22 @@ typedef double (*SpaceTransform)[3];
 
 typedef enum ColorSpaceRGB
 {
-	ColorSpace_sRGB,
-	ColorSpace_CIERGB
+	ColorSpace_sRGB				= 0,
+	ColorSpace_CIERGB,
+	ColorSpace_AdobeRGB,
+	ColorSpace_AppleRGB,
+	ColorSpace_BestRGB,
+	ColorSpace_BetaRGB,
+	ColorSpace_BruceRGB,
+	ColorSpace_ColorMatchRGB,
+	ColorSpace_DonRGB,
+	ColorSpace_ECIRGB,
+	ColorSpace_EktaSpacePS5,
+	ColorSpace_NTSCRGB,
+	ColorSpace_PalSecamRGB,
+	ColorSpace_ProPhotoRGB,
+	ColorSpace_SMPTE_C_RGB,
+	ColorSpace_WideGamutRGB
 } ColorSpaceRGB;
 
 typedef enum

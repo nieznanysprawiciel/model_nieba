@@ -37,6 +37,32 @@ SpaceTransform SpectralConversion::getRGBTransformMatrix( ColorSpaceRGB colorSpa
 			return COLORSPACE_sRGB::RGBtrans_params;
 		case ColorSpace_CIERGB:
 			return COLORSPACE_CIERGB::RGBtrans_params;
+		case ColorSpace_AdobeRGB:
+			return COLORSPACE_ADOBE_RGB::RGBtrans_params;
+		case ColorSpace_AppleRGB:
+			return COLORSPACE_APPLE_RGB::RGBtrans_params;
+		case ColorSpace_BestRGB:
+			return COLORSPACE_BEST_RGB::RGBtrans_params;
+		case ColorSpace_BruceRGB:
+			return COLORSPACE_BRUCE_RGB::RGBtrans_params;
+		case ColorSpace_ColorMatchRGB:
+			return COLORSPACE_COLORMATCH_RGB::RGBtrans_params;
+		case ColorSpace_DonRGB:
+			return COLORSPACE_DON_RGB_4::RGBtrans_params;
+		case ColorSpace_ECIRGB:
+			return COLORSPACE_ECI_RGB::RGBtrans_params;
+		case ColorSpace_EktaSpacePS5:
+			return COLORSPACE_EKTA_SPACE_PS5::RGBtrans_params;
+		case ColorSpace_NTSCRGB:
+			return COLORSPACE_NTSC_RGB::RGBtrans_params;
+		case ColorSpace_PalSecamRGB:
+			return COLORSPACE_PALSECAM_RGB::RGBtrans_params;
+		case ColorSpace_ProPhotoRGB:
+			return COLORSPACE_PRO_PHOTO_RGB::RGBtrans_params;
+		case ColorSpace_SMPTE_C_RGB:
+			return COLORPSPACE_SMPTE_RGB::RGBtrans_params;
+		case ColorSpace_WideGamutRGB:
+			return COLORSPACE_WIDE_GAMUT_RGB::RGBtrans_params;
 		default:
 			return COLORSPACE_CIERGB::RGBtrans_params;
 	}
@@ -44,6 +70,9 @@ SpaceTransform SpectralConversion::getRGBTransformMatrix( ColorSpaceRGB colorSpa
 
 void SpectralConversion::setDestinationColorSpace( ColorSpaceRGB space )
 {
+	if( space == m_destColorSpace )
+		return;
+
 	m_destColorSpace = space;
 
 	buildConversionRGB();
@@ -51,6 +80,9 @@ void SpectralConversion::setDestinationColorSpace( ColorSpaceRGB space )
 
 void SpectralConversion::setColorMatchingFunction( SpectralCoefficients cmf )
 {
+	if( cmf == m_colorMatchingFunction )
+		return;
+
 	m_colorMatchingFunction = cmf;
 
 	buildConversionXYZ();

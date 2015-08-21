@@ -47,6 +47,8 @@ public:
 	inline int get_last_generation_time() { return last_generation_time; }
 
 
+	void set_spectral_CMF( SpectralCoefficients cmf ) { sky_model->spectralConversion.setColorMatchingFunction( cmf ); }
+	void set_dest_color_space( ColorSpaceRGB color_space ) { sky_model->spectralConversion.setDestinationColorSpace( color_space ); }
 	void set_version_spectral() { sky_model->set_model_version(VERSION_SPECTRAL); }
 	void set_version_RGB() { sky_model->set_model_version(VERSION_RGB); }
 	void set_sky_intensity(float);

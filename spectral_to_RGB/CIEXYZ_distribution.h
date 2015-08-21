@@ -361,3 +361,186 @@ double RGBtrans_params[3][3] =
 };
 
 }
+
+namespace COLORSPACE_ADOBE_RGB
+{
+// ADOBE RGB D65
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 2.0413690, -0.5649464, -0.3446944},
+	{-0.9692660,  1.8760108,  0.0415560},
+	{ 0.0134474, -0.1183897,  1.0154096}
+};
+
+}
+
+namespace COLORSPACE_APPLE_RGB
+{
+// Apple RGB D65
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 2.9515373, -1.2894116, -0.4738445},
+	{-1.0851093,  1.9908566,  0.0372026},
+	{ 0.0854934, -0.2694964,  1.0912975}
+};
+
+}
+
+namespace COLORSPACE_BEST_RGB
+{
+// Best RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.7552599, -0.4836786, -0.2530000},
+	{-0.5441336,  1.5068789,  0.0215528},
+	{ 0.0063467, -0.0175761,  1.2256959}
+};
+
+}
+
+namespace COLORSPACE_BETA_RGB
+{
+// Beta RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.6832270, -0.4282363, -0.2360185},
+	{-0.7710229,  1.7065571,  0.0446900},
+	{ 0.0400013, -0.0885376,  1.2723640}
+};
+
+}
+
+namespace COLORSPACE_BRUCE_RGB
+{
+// Bruce RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 2.7454669, -1.1358136, -0.4350269},
+	{-0.9692660,  1.8760108,  0.0415560},
+	{ 0.0112723, -0.1139754,  1.0132541}
+};
+
+}
+
+namespace COLORSPACE_COLORMATCH_RGB
+{
+// ColorMatch RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 2.6422874, -1.2234270, -0.3930143},
+	{-1.1119763,  2.0590183,  0.0159614},
+	{ 0.0821699, -0.2807254,  1.4559877}
+};
+
+}
+
+namespace COLORSPACE_DON_RGB_4
+{
+// DON RGB 4 D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.7603902, -0.4881198, -0.2536126},
+	{-0.7126288,  1.6527432,  0.0416715},
+	{ 0.0078207, -0.0347411,  1.2447743}
+};
+
+}
+
+namespace COLORSPACE_ECI_RGB
+{
+// ECI RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.7827618, -0.4969847, -0.2690101},
+	{-0.9593623,  1.9477962, -0.0275807},
+	{ 0.0859317, -0.1744674,  1.3228273}
+};
+
+}
+
+namespace COLORSPACE_EKTA_SPACE_PS5
+{
+// Ekta Space PS5 D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 2.0043819, -0.7304844, -0.2450052},
+	{-0.7110285,  1.6202126,  0.0792227},
+	{ 0.0381263, -0.0868780,  1.2725438}
+};
+
+}
+
+namespace COLORSPACE_NTSC_RGB
+{
+// NTSC RGB C
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.9099961, -0.5324542, -0.2882091},
+	{-0.9846663,  1.9991710, -0.0283082},
+	{ 0.0583056, -0.1183781,  0.8975535}
+};
+
+}
+
+namespace COLORSPACE_PALSECAM_RGB
+{
+// PLA/SECAM RGB D65
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 3.0628971, -1.3931791, -0.4757517},
+	{-0.9692660,  1.8760108,  0.0415560},
+	{ 0.0678775, -0.2288548,  1.0693490}
+};
+
+}
+
+namespace COLORSPACE_PRO_PHOTO_RGB
+{
+// PRO PHOTO RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.3459433, -0.2556075, -0.0511118},
+	{-0.5445989,  1.5081673,  0.0205351},
+	{ 0.0000000,  0.0000000,  1.2118128}
+};
+
+}
+
+namespace COLORPSPACE_SMPTE_RGB
+{
+// SMPTE-C RGB D65
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 3.5053960, -1.7394894, -0.5439640},
+	{-1.0690722,  1.9778245,  0.0351722},
+	{ 0.0563200, -0.1970226,  1.0502026}
+};
+
+}
+
+namespace COLORSPACE_WIDE_GAMUT_RGB
+{
+// WIDE GAMUT RGB D50
+//http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+double RGBtrans_params[3][3] =
+{//linear transform
+	{ 1.4628067, -0.1840623, -0.2743606},
+	{-0.5217933,  1.4472381,  0.0677227},
+	{ 0.0349342, -0.0968930,  1.2884099}
+};
+
+}
+

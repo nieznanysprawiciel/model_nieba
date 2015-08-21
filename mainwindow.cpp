@@ -238,7 +238,7 @@ void MainWindow::latitudeChanged( double /*value*/ )
 
 	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
 									ui->SpinBox_longitude->value(),
-									gmtime( &time ));
+									localtime( &time ));
 	recomputeSunPosition();
 }
 
@@ -252,7 +252,7 @@ void MainWindow::longitudeChanged( double /*value*/ )
 
 	sun_position.setSunConditions(	ui->SpinBox_latitude->value(),
 									ui->SpinBox_longitude->value(),
-									gmtime( &time ));
+									localtime( &time ));
 	recomputeSunPosition();
 }
 
@@ -304,6 +304,46 @@ void MainWindow::on_generate_clicked()
 		sky_display->set_version_spectral();
 	else
 		sky_display->set_version_RGB();
+
+	// Wybiera współczynniki CMF dla konwersji
+	if( ui->radioCIE1931->isChecked() )
+		sky_display->set_spectral_CMF( CMF_CIE1931 );
+	else
+		sky_display->set_spectral_CMF( CMF_CIE2006 );
+
+	// Wybiera docelową przestrzeń barw
+	if( ui->radioAdobeRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_AdobeRGB );
+	else if( ui->radioAppleRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_AppleRGB );
+	else if( ui->radioBestRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_BestRGB );
+	else if( ui->radioBetaRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_BetaRGB );
+	else if( ui->radioBruceRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_BruceRGB );
+	else if( ui->radioCIERGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_CIERGB );
+	else if( ui->radioColorMatch->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_ColorMatchRGB );
+	else if( ui->radioDonRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_DonRGB );
+	else if( ui->radioECIRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_ECIRGB );
+	else if( ui->radioEktaSpace->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_EktaSpacePS5 );
+	else if( ui->radioNTSCRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_NTSCRGB );
+	else if( ui->radioPalSecamRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_PalSecamRGB );
+	else if( ui->radioProPhotoRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_ProPhotoRGB );
+	else if( ui->radioSMPTE->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_SMPTE_C_RGB );
+	else if( ui->radioSRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_sRGB );
+	else if( ui->radioWideGamutRGB->isChecked() )
+		sky_display->set_dest_color_space( ColorSpace_WideGamutRGB );
 
 	// Pobieramy wartości albedo. W wersji RGB zostaną użyte 3 pierwsze, pozostałe zostaną zignorowane.
 	double albedo[9];
