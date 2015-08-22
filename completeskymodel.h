@@ -19,7 +19,7 @@
 using namespace glm;
 
 const double SPECTRAL_SCALE = 255.0 / 40.0;
-const double RGB_SCALE = 1.2;
+const double RGB_SCALE = 1.3;
 
 class CompleteSkyModel
 {

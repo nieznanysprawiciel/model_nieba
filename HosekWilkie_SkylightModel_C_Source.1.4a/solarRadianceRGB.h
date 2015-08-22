@@ -1,6 +1,6 @@
 //wybierz tylko jedną z opcji inaczej się nie skompiluje
-//#define CIE1931
-#define CIE2006
+#define CIE1931
+//#define CIE2006
 
 
 

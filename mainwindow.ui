@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -996,7 +996,7 @@
                 <number>10000</number>
                </property>
                <property name="value">
-                <number>100</number>
+                <number>250</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -1018,7 +1018,7 @@
                 <double>0.010000000000000</double>
                </property>
                <property name="value">
-                <double>1.000000000000000</double>
+                <double>2.500000000000000</double>
                </property>
               </widget>
              </item>
@@ -1078,7 +1078,7 @@
                 <number>10000</number>
                </property>
                <property name="value">
-                <number>100</number>
+                <number>250</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
