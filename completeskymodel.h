@@ -18,7 +18,8 @@
 
 using namespace glm;
 
-const double SPECTRAL_SCALE = 10.0;
+const double SPECTRAL_SCALE = 255.0 / 40.0;
+const double RGB_SCALE = 1.2;
 
 class CompleteSkyModel
 {
@@ -107,7 +108,6 @@ private:        //funkcje pomocnicze
 	void next_angles(	glm::vec2 angle_step, glm::vec2 top_left_corner,
 						double& theta, double& gamma,
 						int & currentX, int & currentY );
-	double find_sun_correction_factor( double elevation );
 	unsigned int make_RGB( double& R, double& G, double& B );
 	unsigned short make_16bit( double& color );
 

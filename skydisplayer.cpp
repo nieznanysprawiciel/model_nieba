@@ -135,25 +135,6 @@ void SkyDisplayer::set_solar_elevation(float elevation)
 	sun_vector.z = -glm::cos(rad_elevation);
 }
 
-//void SkyDisplayer::sky_display()
-//{
-//	vec3    euler_angles(sky_data.vertical_angle,sky_data.horizontal_angle,0.0);
-//	quat    rotation(euler_angles);
-//	QTime   start_of_exec;
-
-//	start_of_exec.start();
-
-//	sky_model->init(color_buffer, sky_data.horizontal_pixels,
-//					sky_data.vertical_pixels, sky_data.near_plane,
-//					sky_data.albedo, sky_data.turbidity, sun_vector);
-
-
-//	sky_model->execute(rotation);
-//	last_generation_time = start_of_exec.elapsed();
-
-//	dithering();
-//	//random_noise();
-//}
 
 void SkyDisplayer::sky_display_multithreads()
 {
@@ -223,90 +204,6 @@ void SkyDisplayer::save_image(QString& file_name)
 	sky_image.save(file_name,0,100);
 }
 
-
-///**Używa algorytmu Floyda-Steinberga do obrazka.
-//Aby włączyć dithering trzeba ustawić zmienną dithering_level
-//na wartość większą niż 1.
-//Zmienna ta oznacza jaka będzie przerwa między dopuszczalnymi
-//poziomami składowych RGB.
-//Czyli poziom 3 oznacza, że pierwsza dopuszczalna wartość
-//mniejsza od 255 wynosi 252.*/
-
-//void SkyDisplayer::dithering()
-//{
-//	if( dithering_level < 2 )	//nie mamy co robić
-//		return;
-
-//	int vert_pix = sky_data.vertical_pixels;
-//	int hor_pix = sky_data.horizontal_pixels;
-
-//	//Będziemy przetwarzać piksele w poziomie. Błędy propagują się
-//	//najdalej o jeden piksel w związku z czym potrzebujemy tablicy,
-//	//która pomieści dwa wiersze obrazka
-//	float* error_table = new float[hor_pix<<1];
-
-
-//	for( int channel = 0; channel < 3; ++ channel )
-//	{//dla uproszczenia załóżmy 0 - B, 1 - G, 2 - R
-//		int mask = 0xFF;	//maska do wydobywania składowej
-//		int shift = 8*channel;	//przesunięcie maski, żeby dostać się do koloru channel
-
-//		for( int i=0; i < hor_pix*2; ++i )
-//			error_table[i] = 0;		//zerujemy pamięć
-
-//		for( int vert = 0; vert < vert_pix; ++vert )
-//		{//przechodzimy obrazek w pionie
-
-//			for( int hor = 0; hor < hor_pix; ++hor )
-//			{//przechodzimy obrazek w poziomie
-//				int pixel = color_buffer[vert*hor_pix + hor];		//pobieramy piksel
-//				int pix = pixel & (mask << shift);	//wydobywamy składową
-//				pix = pix >> shift;					//przesuwamy ją do zakresu 0-255
-//				float fpix = (float)pix + error_table[hor];	//konwertujemy na float i dodajemy błąd
-
-//				float pix_error;
-//				pix_error = fmod(fpix, (float)dithering_level);	//liczymy błąd
-//				if( pix_error < (float)dithering_level/(float)2)
-//					pix = (int)(fpix - pix_error);
-//				else
-//					pix = (int)(fpix - pix_error + dithering_level),
-//					pix_error -= dithering_level;
-
-//				//pix = (int)(fpix/dithering_level)*dithering_level;	//ustalamy wartość koloru
-
-//				if( pix > 255 )
-//				{//jeżeli wartość wyszła poza zakres, to obcinamy
-//				//a to co zostanie propagujemy razem z błędem
-//					pix_error += pix - 255;
-//					pix = 255;
-//				}
-
-//				//dodajemy błąd do tabeli z odpowiednimi wagami
-//				error_table[hor_pix + hor] += (float)5*pix_error/(float)16;
-//				//na brzegach obrazka błędy po prostu olewamy
-//				if( hor != 0 )
-//					error_table[hor_pix + hor - 1] += (float)3*pix_error/(float)16;
-//				if( hor != hor_pix - 1)
-//				{
-//					error_table[hor + 1] += (float)7*pix_error/(float)16;
-//					error_table[hor_pix + hor + 1] += pix_error/(float)16;
-//				}
-
-//				pix = pix << shift;		//przesuwamy składową na właściwe miejsce
-//				pixel = pixel & (~(mask << shift));	//zerujemy miejsce na naszą składową
-//				pixel = pixel | pix;	//wstawiamy składową na miejsce
-//				color_buffer[vert*hor_pix + hor] = pixel;	//wstawiamy do pamięci
-//			}
-
-//			//przenosimy roboczy wiersz tabeli do góry, a dolny wiersz zerujemy
-//			for( int i = 0; i < hor_pix; ++i )
-//				error_table[i] = error_table[hor_pix + i], error_table[hor_pix + i] = 0;
-//		}
-//	}
-
-
-//	delete [] error_table;
-//}
 
 /**Używa algorytmu Floyda-Steinberga do obrazka.
 Aby włączyć dithering trzeba ustawić zmienną dithering_level
@@ -417,38 +314,5 @@ void SkyDisplayer::copy_from_16bit(unsigned short* R, unsigned short* G, unsigne
 	}
 }
 
-//void SkyDisplayer::random_noise()
-//{
-//	int vert_pix = sky_data.vertical_pixels;
-//	int hor_pix = sky_data.horizontal_pixels;
-//	srand((int)time);
-
-//	for( int i = 0; i < vert_pix*hor_pix; ++i )
-//	{
-//		int color = color_buffer[i];
-//		short R = (color & 0xFF0000) >> 16;
-//		short G = (color & 0xFF00) >> 8;
-//		short B = color & 0xFF;
-
-//		//Na razie random jest taki sam dla wszystkich
-//		int random = rand() % 100;
-//		if( random < 25 )       random = 1;
-//		else if( random < 50 )  random = -1;
-//		else                    random = 0;
-
-//		R += random;
-//		G += random;
-//		B += random;
-//		if( R > 255 )   R = 255;
-//		if( G > 255 )   G = 255;
-//		if( B > 255 )   B = 255;
-//		if( R < 0 )     R = 0;
-//		if( G < 0 )     G = 0;
-//		if( B < 0 )     B = 0;
-
-//		color = (R << 16) | (G << 8) | B;
-//		color_buffer[i] = color;
-//	}
-//}
 
 

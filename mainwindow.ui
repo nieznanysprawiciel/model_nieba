@@ -32,7 +32,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="skyParams">
          <attribute name="title">
@@ -996,7 +996,7 @@
                 <number>10000</number>
                </property>
                <property name="value">
-                <number>550</number>
+                <number>100</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -1018,7 +1018,7 @@
                 <double>0.010000000000000</double>
                </property>
                <property name="value">
-                <double>3.500000000000000</double>
+                <double>1.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -1538,7 +1538,7 @@
                 <number>1</number>
                </property>
                <property name="maximum">
-                <number>17999</number>
+                <number>15999</number>
                </property>
                <property name="value">
                 <number>6000</number>
@@ -1554,7 +1554,7 @@
                 <double>1.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>179.990000000000009</double>
+                <double>159.990000000000009</double>
                </property>
                <property name="singleStep">
                 <double>0.010000000000000</double>
@@ -1774,12 +1774,12 @@
             <rect>
              <x>40</x>
              <y>30</y>
-             <width>82</width>
+             <width>191</width>
              <height>17</height>
             </rect>
            </property>
            <property name="text">
-            <string>CIE 1931</string>
+            <string>CIE 1931 2-deg CMFs</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1790,12 +1790,12 @@
             <rect>
              <x>40</x>
              <y>60</y>
-             <width>82</width>
+             <width>191</width>
              <height>17</height>
             </rect>
            </property>
            <property name="text">
-            <string>CIE 2006</string>
+            <string>CIE 2006 2-deg CMFs</string>
            </property>
           </widget>
          </widget>
@@ -1829,6 +1829,9 @@
            <property name="text">
             <string>sRGB</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
           <widget class="QRadioButton" name="radioCIERGB">
            <property name="geometry">
@@ -1843,7 +1846,7 @@
             <string>CIE RGB</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
           <widget class="QRadioButton" name="radioAdobeRGB">
