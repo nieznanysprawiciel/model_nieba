@@ -87,11 +87,11 @@ double SpectralConversion::convertRGB( double* wavesTable )
 	int extWave = 0;
 	for( int k = 0; k < WAVE_LENGTHS - 1; ++k )
 	{
+		double waveDiff = wavesTable[ k + 1 ] - wavesTable[ k ];
 		for( int j = 0; j < 8; ++j )
 		{
 			double weight1 = j/8.0;		//j*5/40
-			double weight2 = 1 - weight1;
-			extendedWaveTable[ extWave ] = weight2 * wavesTable[ k ] + weight1 * wavesTable[ k + 1 ];
+			extendedWaveTable[ extWave ] = wavesTable[ k ] + weight1 * waveDiff;
 			extWave++;
 		}
 	}
