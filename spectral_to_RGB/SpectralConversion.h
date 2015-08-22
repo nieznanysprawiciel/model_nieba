@@ -39,7 +39,8 @@ typedef enum ColorSpaceRGB
 typedef enum
 {
 	CMF_CIE1931			= 0,
-	CMF_CIE2006			= 1
+	CMF_CIE2006			= 1,
+	CMF_CIE1931JuddVos	= 2
 } SpectralCoefficients;
 
 /**@brief Konwertuje kolor z wersji spektralnej do RGB lub XYZ.

@@ -11,6 +11,8 @@ double* SpectralConversion::getConeFundamentals( SpectralCoefficients spectralCo
 			return CIE1931::XYZ_cone_fundamentals;
 		case CMF_CIE2006:
 			return CIE2006::XYZ_cone_fundamentals;
+		case CMF_CIE1931JuddVos:
+			return CIE1931JuddVos::XYZ_cone_fundamentals;
 		default:
 			return CIE1931::XYZ_cone_fundamentals;
 	}
@@ -24,6 +26,8 @@ SpaceTransform SpectralConversion::getXYZTransformMatrix( SpectralCoefficients s
 			return CIE1931::XYZtrans_params;
 		case CMF_CIE2006:
 			return CIE2006::XYZtrans_params;
+		case CMF_CIE1931JuddVos:
+			return CIE1931JuddVos::XYZtrans_params;
 		default:
 			return CIE1931::XYZtrans_params;
 	}

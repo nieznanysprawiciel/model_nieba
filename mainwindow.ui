@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1082</width>
+    <width>1238</width>
     <height>735</height>
    </rect>
   </property>
@@ -1757,11 +1757,11 @@
             <x>10</x>
             <y>10</y>
             <width>241</width>
-            <height>91</height>
+            <height>131</height>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Wybór funkcji dopasowania kolorów przy konwersji spektrum światła widzialnego do przestrzeni RGB.</string>
+           <string>Wybór funkcji dopasowania kolorów przy konwersji spektrum światła widzialnego do przestrzeni XYZ.</string>
           </property>
           <property name="toolTipDuration">
            <number>5000</number>
@@ -1772,7 +1772,7 @@
           <widget class="QRadioButton" name="radioCIE1931">
            <property name="geometry">
             <rect>
-             <x>40</x>
+             <x>20</x>
              <y>30</y>
              <width>191</width>
              <height>17</height>
@@ -1782,13 +1782,13 @@
             <string>CIE 1931 2-deg CMFs</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
           <widget class="QRadioButton" name="radioCIE2006">
            <property name="geometry">
             <rect>
-             <x>40</x>
+             <x>20</x>
              <y>60</y>
              <width>191</width>
              <height>17</height>
@@ -1798,12 +1798,28 @@
             <string>CIE 2006 2-deg CMFs</string>
            </property>
           </widget>
+          <widget class="QRadioButton" name="radioCIEJuddVoss">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>90</y>
+             <width>221</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>CIE 1931 2-deg CMFs (Judd and Voss)</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
          </widget>
          <widget class="QGroupBox" name="groupBox_10">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>110</y>
+            <y>150</y>
             <width>241</width>
             <height>511</height>
            </rect>
@@ -2047,7 +2063,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>784</width>
+         <width>940</width>
          <height>694</height>
         </rect>
        </property>
@@ -2061,7 +2077,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1082</width>
+     <width>1238</width>
      <height>21</height>
     </rect>
    </property>

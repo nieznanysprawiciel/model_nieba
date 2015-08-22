@@ -308,6 +308,8 @@ void MainWindow::on_generate_clicked()
 	// Wybiera współczynniki CMF dla konwersji
 	if( ui->radioCIE1931->isChecked() )
 		sky_display->set_spectral_CMF( CMF_CIE1931 );
+	else if( ui->radioCIEJuddVoss->isChecked() )
+		sky_display->set_spectral_CMF( CMF_CIE1931JuddVos );
 	else
 		sky_display->set_spectral_CMF( CMF_CIE2006 );
 
