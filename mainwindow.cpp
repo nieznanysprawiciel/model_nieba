@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("Modelowanie nieba w różnych warunkach pogodowych");
+	setWindowTitle("Modelowanie bezchmurnego nieba o różnych porach dnia");
 
 	sky_display = new SkyDisplayer( SIZE_X,SIZE_Y, this );
 	//drawing_area = new DrawingArea(sky_display, SIZE_X, SIZE_Y, this);
