@@ -21,9 +21,9 @@ CompleteSkyModel::CompleteSkyModel()
 	channels_wave = NULL;
 
 	channels_wave = new double[num_channels];
-	for( int i = 0; i < WAVE_LENGTHS; ++i )
+	for( int i = 0; i < num_channels; ++i )
 	{
-		channels_wave[i] = 400 + i * 40;
+		channels_wave[i] = 360 + i * 40;
 		albedo[i] = 0.8;
 	}
 

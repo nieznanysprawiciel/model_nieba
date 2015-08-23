@@ -2,7 +2,7 @@
 #define SPECTRAL_CONVERSION_H
 
 
-#define WAVE_LENGTHS	9
+#define WAVE_LENGTHS	10
 #define COEFFICIENTS	((WAVE_LENGTHS - 1)*8 + 1)
 
 #define RED_CHANNEL				0
@@ -40,7 +40,8 @@ typedef enum
 {
 	CMF_CIE1931			= 0,
 	CMF_CIE2006			= 1,
-	CMF_CIE1931JuddVos	= 2
+	CMF_CIE1931JuddVos	= 2,
+	CMF_CIE1964			= 3
 } SpectralCoefficients;
 
 /**@brief Konwertuje kolor z wersji spektralnej do RGB lub XYZ.
@@ -95,7 +96,8 @@ double SpectralConversion::convertRGB( double* wavesTable )
 			extWave++;
 		}
 	}
-	extendedWaveTable[ extWave ] = wavesTable[ WAVE_LENGTHS - 1 ];
+	while( extWave < COEFFICIENTS )
+		extendedWaveTable[ extWave++ ] = wavesTable[ WAVE_LENGTHS - 1 ];
 
 	for( int i = 0; i < COEFFICIENTS; ++i )
 		result += m_transformMatrix[ i ][ channel ] * extendedWaveTable[ i ];

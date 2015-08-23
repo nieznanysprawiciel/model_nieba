@@ -27,43 +27,46 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->scrollDrawingArea->setWidget(sky_display);
 
 
-	albedo_sliders[0] = ui->slider_albedo1;
-	albedo_sliders[1] = ui->slider_albedo2;
-	albedo_sliders[2] = ui->slider_albedo3;
-	albedo_sliders[3] = ui->slider_albedo4;
-	albedo_sliders[4] = ui->slider_albedo5;
-	albedo_sliders[5] = ui->slider_albedo6;
-	albedo_sliders[6] = ui->slider_albedo7;
-	albedo_sliders[7] = ui->slider_albedo8;
-	albedo_sliders[8] = ui->slider_albedo9;
+	albedo_sliders[0] = ui->slider_albedo0;
+	albedo_sliders[1] = ui->slider_albedo1;
+	albedo_sliders[2] = ui->slider_albedo2;
+	albedo_sliders[3] = ui->slider_albedo3;
+	albedo_sliders[4] = ui->slider_albedo4;
+	albedo_sliders[5] = ui->slider_albedo5;
+	albedo_sliders[6] = ui->slider_albedo6;
+	albedo_sliders[7] = ui->slider_albedo7;
+	albedo_sliders[8] = ui->slider_albedo8;
+	albedo_sliders[9] = ui->slider_albedo9;
 
 	albedo_spinboxes[0] = ui->SpinBox_albedo1;
-	albedo_spinboxes[1] = ui->SpinBox_albedo2;
-	albedo_spinboxes[2] = ui->SpinBox_albedo3;
-	albedo_spinboxes[3] = ui->SpinBox_albedo4;
-	albedo_spinboxes[4] = ui->SpinBox_albedo5;
-	albedo_spinboxes[5] = ui->SpinBox_albedo6;
-	albedo_spinboxes[6] = ui->SpinBox_albedo7;
-	albedo_spinboxes[7] = ui->SpinBox_albedo8;
-	albedo_spinboxes[8] = ui->SpinBox_albedo9;
+	albedo_spinboxes[1] = ui->SpinBox_albedo1;
+	albedo_spinboxes[2] = ui->SpinBox_albedo2;
+	albedo_spinboxes[3] = ui->SpinBox_albedo3;
+	albedo_spinboxes[4] = ui->SpinBox_albedo4;
+	albedo_spinboxes[5] = ui->SpinBox_albedo5;
+	albedo_spinboxes[6] = ui->SpinBox_albedo6;
+	albedo_spinboxes[7] = ui->SpinBox_albedo7;
+	albedo_spinboxes[8] = ui->SpinBox_albedo8;
+	albedo_spinboxes[9] = ui->SpinBox_albedo9;
 
-	albedo_labels[0] = ui->label_albedo1;
-	albedo_labels[1] = ui->label_albedo2;
-	albedo_labels[2] = ui->label_albedo3;
-	albedo_labels[3] = ui->label_albedo4;
-	albedo_labels[4] = ui->label_albedo5;
-	albedo_labels[5] = ui->label_albedo6;
-	albedo_labels[6] = ui->label_albedo7;
-	albedo_labels[7] = ui->label_albedo8;
-	albedo_labels[8] = ui->label_albedo9;
+	albedo_labels[0] = ui->label_albedo0;
+	albedo_labels[1] = ui->label_albedo1;
+	albedo_labels[2] = ui->label_albedo2;
+	albedo_labels[3] = ui->label_albedo3;
+	albedo_labels[4] = ui->label_albedo4;
+	albedo_labels[5] = ui->label_albedo5;
+	albedo_labels[6] = ui->label_albedo6;
+	albedo_labels[7] = ui->label_albedo7;
+	albedo_labels[8] = ui->label_albedo8;
+	albedo_labels[9] = ui->label_albedo9;
 
-	for( unsigned k = 0; k < 9; ++k )
+	for( unsigned k = 0; k < WAVE_LENGTHS; ++k )
 	{
-		int wave_length = 400 + k * 40;
+		int wave_length = 360 + k * 40;
 		albedo_labels[k]->setText( QString::number(wave_length) + " nm");
 	}
 
-	for( unsigned int i = 0; i < 9; ++i )
+	for( unsigned int i = 0; i < WAVE_LENGTHS; ++i )
 	{
 		connect(albedo_sliders[i], SIGNAL(valueChanged(int)), this, SLOT(value_changed(int)));
 		connect(albedo_spinboxes[i], SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
@@ -113,7 +116,7 @@ MainWindow::~MainWindow()
 Wyłączamy odpowiednie przyciski i zmieniamy podpisy na etykietach.*/
 void MainWindow::version_RGB()
 {
-	for( unsigned int i = 3; i < 9; ++i )
+	for( unsigned int i = 3; i < WAVE_LENGTHS; ++i )
 	{
 		albedo_sliders[i]->setEnabled( false );
 		albedo_spinboxes[i]->setEnabled( false );
@@ -129,7 +132,7 @@ void MainWindow::version_RGB()
 Włączamy odpowiednie przyciski i zmieniamy podpisy na etykietach.*/
 void MainWindow::version_spectral()
 {
-	for( unsigned int i = 3; i < 9; ++i )
+	for( unsigned int i = 3; i < WAVE_LENGTHS; ++i )
 	{
 		albedo_sliders[i]->setEnabled( true );
 		albedo_spinboxes[i]->setEnabled( true );
@@ -310,6 +313,8 @@ void MainWindow::on_generate_clicked()
 		sky_display->set_spectral_CMF( CMF_CIE1931 );
 	else if( ui->radioCIEJuddVoss->isChecked() )
 		sky_display->set_spectral_CMF( CMF_CIE1931JuddVos );
+	else if( ui->radioCIE1964->isChecked() )
+		sky_display->set_spectral_CMF( CMF_CIE1964 );
 	else
 		sky_display->set_spectral_CMF( CMF_CIE2006 );
 

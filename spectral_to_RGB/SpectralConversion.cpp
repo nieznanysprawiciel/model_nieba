@@ -13,6 +13,8 @@ double* SpectralConversion::getConeFundamentals( SpectralCoefficients spectralCo
 			return CIE2006::XYZ_cone_fundamentals;
 		case CMF_CIE1931JuddVos:
 			return CIE1931JuddVos::XYZ_cone_fundamentals;
+		case CMF_CIE1964:
+			return CIE1964::XYZ_cone_fundamentals;
 		default:
 			return CIE1931::XYZ_cone_fundamentals;
 	}
@@ -28,6 +30,8 @@ SpaceTransform SpectralConversion::getXYZTransformMatrix( SpectralCoefficients s
 			return CIE2006::XYZtrans_params;
 		case CMF_CIE1931JuddVos:
 			return CIE1931JuddVos::XYZtrans_params;
+		case CMF_CIE1964:
+			return CIE1964::XYZtrans_params;
 		default:
 			return CIE1931::XYZtrans_params;
 	}
@@ -109,12 +113,11 @@ void SpectralConversion::buildConversionXYZ()
 	//wype³niamy tablicê przeliczników
 	for( int i = 0; i < COEFFICIENTS; ++i )
 	{//chodzimy po d³ugoœciach fali
-		//najpierw przeskakujemy nieu¿ywany obszar (8)
 		//przeskakujemy do odpowiedniej d³ugoœci fali (i*4)
 		//wybieramy odpowiedni¹ kolumnê
-		double l_lambda = XYZ_cone_fundamentals[8 + i*4 + 1];
-		double m_lambda = XYZ_cone_fundamentals[8 + i*4 + 2];
-		double s_lambda = XYZ_cone_fundamentals[8 + i*4 + 3];
+		double l_lambda = XYZ_cone_fundamentals[i*4 + 1];
+		double m_lambda = XYZ_cone_fundamentals[i*4 + 2];
+		double s_lambda = XYZ_cone_fundamentals[i*4 + 3];
 
 		for(int j = 0; j < 3; ++j)
 		{//chodzimy po cmf dla X,Y i Z

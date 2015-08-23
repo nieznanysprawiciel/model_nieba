@@ -26,9 +26,9 @@ private:
     Ui::MainWindow *ui;
 	SkyDisplayer* sky_display;
 
-	QLabel*				albedo_labels[9];
-	QDoubleSpinBox*		albedo_spinboxes[9];
-	QSlider*			albedo_sliders[9];
+	QLabel*				albedo_labels[WAVE_LENGTHS];
+	QDoubleSpinBox*		albedo_spinboxes[WAVE_LENGTHS];
+	QSlider*			albedo_sliders[WAVE_LENGTHS];
 
 	SunPosition			sun_position;
 
