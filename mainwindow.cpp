@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	albedo_sliders[8] = ui->slider_albedo8;
 	albedo_sliders[9] = ui->slider_albedo9;
 
-	albedo_spinboxes[0] = ui->SpinBox_albedo1;
+	albedo_spinboxes[0] = ui->SpinBox_albedo0;
 	albedo_spinboxes[1] = ui->SpinBox_albedo1;
 	albedo_spinboxes[2] = ui->SpinBox_albedo2;
 	albedo_spinboxes[3] = ui->SpinBox_albedo3;
@@ -166,12 +166,12 @@ void MainWindow::value_changed(double value)
 {
 	int ret_value = (int)round( value * 100.0 );
 
-	for( unsigned int i = 0; i < 9; ++i )
+	for( unsigned int i = 0; i < WAVE_LENGTHS; ++i )
 		if( sender() == albedo_spinboxes[i] )
 		{
 			if( ui->BindAlbedoCheckBox->isChecked() )
 			{
-				for( unsigned int j = 0; j < 9; ++j )
+				for( unsigned int j = 0; j < WAVE_LENGTHS; ++j )
 					albedo_sliders[j]->setValue( ret_value );
 			}
 			else
@@ -202,12 +202,12 @@ void MainWindow::value_changed(int value)
 {
 	double ret_value = (double)value/(double)100;
 
-	for( unsigned int i = 0; i < 9; ++i )
+	for( unsigned int i = 0; i < WAVE_LENGTHS; ++i )
 		if( sender() == albedo_sliders[i] )
 		{
 			if( ui->BindAlbedoCheckBox->isChecked() )
 			{
-				for( unsigned int j = 0; j < 9; ++j )
+				for( unsigned int j = 0; j < WAVE_LENGTHS; ++j )
 					albedo_spinboxes[j]->setValue( ret_value );
 			}
 			else
