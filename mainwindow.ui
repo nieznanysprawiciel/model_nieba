@@ -1521,13 +1521,16 @@
                <number>5000</number>
               </property>
               <property name="minimum">
-               <number>-90</number>
+               <number>-9000</number>
               </property>
               <property name="maximum">
-               <number>90</number>
+               <number>9000</number>
+              </property>
+              <property name="singleStep">
+               <number>100</number>
               </property>
               <property name="value">
-               <number>15</number>
+               <number>1500</number>
               </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -1535,21 +1538,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_2">
-              <property name="toolTip">
-               <string>Obrót widoku w pionie.</string>
-              </property>
-              <property name="toolTipDuration">
-               <number>5000</number>
-              </property>
+             <widget class="QDoubleSpinBox" name="SpinBox_vertical">
               <property name="minimum">
-               <number>-90</number>
+               <double>-90.000000000000000</double>
               </property>
               <property name="maximum">
-               <number>90</number>
+               <double>90.000000000000000</double>
               </property>
               <property name="value">
-               <number>15</number>
+               <double>15.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -2197,50 +2194,18 @@
  <resources/>
  <connections>
   <connection>
-   <sender>spinBox_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>verticalSlider_rotation</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>268</x>
-     <y>509</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>483</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>verticalSlider_rotation</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>238</x>
-     <y>483</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>509</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>horizontalSlider_rotation</sender>
    <signal>valueChanged(int)</signal>
    <receiver>spinBox_horizontal</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>205</x>
-     <y>299</y>
+     <x>208</x>
+     <y>125</y>
     </hint>
     <hint type="destinationlabel">
-     <x>258</x>
-     <y>300</y>
+     <x>261</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
@@ -2251,12 +2216,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>300</y>
+     <x>261</x>
+     <y>124</y>
     </hint>
     <hint type="destinationlabel">
-     <x>205</x>
-     <y>299</y>
+     <x>208</x>
+     <y>125</y>
     </hint>
    </hints>
   </connection>

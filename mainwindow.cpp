@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->slider_turbidity,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_latitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
 	connect(ui->slider_longitude,SIGNAL(valueChanged(int)),this,SLOT(value_changed(int)));
+	connect(ui->verticalSlider_rotation, SIGNAL(valueChanged(int)), this, SLOT(value_changed(int)));
     //spinboxy
 	connect(ui->sky_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->solar_intensity_spinbox,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
@@ -91,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->SpinBox_turbidity,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_latitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
 	connect(ui->SpinBox_longitude,SIGNAL(valueChanged(double)),this,SLOT(value_changed(double)));
+	connect(ui->SpinBox_vertical,SIGNAL(valueChanged(double)),this, SLOT(value_changed(double)));
 
 	connect(ui->SpinBox_latitude,SIGNAL(valueChanged(double)),this,SLOT(latitudeChanged(double)));
 	connect(ui->SpinBox_longitude,SIGNAL(valueChanged(double)),this,SLOT(longitudeChanged(double)));
@@ -194,6 +196,8 @@ void MainWindow::value_changed(double value)
 		ui->slider_latitude->setValue(ret_value);
 	else if( sender() == ui->SpinBox_longitude )
 		ui->slider_longitude->setValue(ret_value);
+	else if( sender() == ui->SpinBox_vertical )
+		ui->verticalSlider_rotation->setValue(ret_value);
 }
 
 /**Funkcja zapewnia, że odpowiadające sobie SpinBoxy i slidery, będą
@@ -230,6 +234,8 @@ void MainWindow::value_changed(int value)
 		ui->SpinBox_latitude->setValue(ret_value);
 	else if( sender() == ui->slider_longitude )
 		ui->SpinBox_longitude->setValue(ret_value);
+	else if( sender() == ui->verticalSlider_rotation )
+		ui->SpinBox_vertical->setValue(ret_value);
 }
 
 void MainWindow::latitudeChanged( double /*value*/ )
@@ -362,7 +368,7 @@ void MainWindow::on_generate_clicked()
 								ui->SpinBox_view_angle->value(),
 								albedo,
 								ui->horizontalSlider_rotation->value(),
-								ui->verticalSlider_rotation->value(),
+								ui->verticalSlider_rotation->value()/100,
 								static_cast<float>( ui->SpinBox_turbidity->value() ));
 }
 
