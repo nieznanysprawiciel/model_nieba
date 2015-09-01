@@ -28,6 +28,7 @@ private:
 	vec3				sun_vector;
 	int*                color_buffer;
 	int					dithering_level;
+	float				gamma;			///< Korekcja gamma dla całego obrazka.
 
 	int                 threads_count;
 	int                 ideal_threads;
@@ -60,7 +61,7 @@ public:
 					float horizontal_angle, float vertical_angle,
 					float turbid);
 	inline void set_perspective_correction( bool value ){ sky_model->use_perspective_correction( value ); }
-	inline void set_gamma_correction( float value ) { sky_model->set_gamma_correction( value ); }
+	inline void set_gamma_correction( float value ) { gamma = value; sky_model->set_gamma_correction( value ); }
 protected:
 	void paintEvent(QPaintEvent *event);
 
@@ -69,6 +70,7 @@ protected:
 	void sky_display_multithreads();
 	void dithering();
 	void dithering(unsigned short* R, unsigned short* G, unsigned short* B);
+	void gamma_correction(unsigned short* R, unsigned short* G, unsigned short* B);
 	void copy_from_16bit(unsigned short* R, unsigned short* G, unsigned short* B);
 	void random_noise();
 signals:

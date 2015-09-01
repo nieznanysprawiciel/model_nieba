@@ -188,9 +188,10 @@ void SkyDisplayer::end_thread()
 	unsigned short* R = sky_model->get_R16_buffer();
 	unsigned short* G = sky_model->get_G16_buffer();
 	unsigned short* B = sky_model->get_B16_buffer();
+
+	gamma_correction(R, G, B);
 	dithering(R, G, B);
 	copy_from_16bit(R, G, B);
-	//random_noise();
 
 	repaint_timer.stop();
 	emit sky_completed();
@@ -282,6 +283,37 @@ void SkyDisplayer::dithering(unsigned short* R, unsigned short* G, unsigned shor
 }
 
 /**
+*/
+void SkyDisplayer::gamma_correction(unsigned short* R, unsigned short* G, unsigned short* B)
+{
+	int vert_pix = sky_data.vertical_pixels;
+	int hor_pix = sky_data.horizontal_pixels;
+	unsigned short* color_buff = NULL;
+
+	for( int j = 0; j < 3; ++j )
+	{   // Iterujemy po kanałach
+		if( j == 0 )
+			color_buff = R;
+		else if( j == 1 )
+			color_buff = G;
+		else
+			color_buff = B;
+
+		for( int vert = 0; vert < vert_pix; ++vert )
+		{//przechodzimy obrazek w pionie
+
+			for( int hor = 0; hor < hor_pix; ++hor )
+			{//przechodzimy obrazek w poziomie
+				unsigned short pixel = color_buff[vert*hor_pix + hor];		//pobieramy piksel
+				double pix = (double)pixel / double( 255.0 * 255 );
+				pixel = 255 * 255 * pow( pix, 1.0 / gamma );
+				color_buff[vert*hor_pix + hor] = pixel;
+			}
+		}
+	}
+}
+
+/**
    @brief QtSkyDisplay::copy_from_16bit przekształca tablicę ze składowymi 16 bitowymi
    na format RGB i wstawia do tablicy w zmiennej color_buffer.
    @param R Tablica z barwą czerwoną.
@@ -290,7 +322,6 @@ void SkyDisplayer::dithering(unsigned short* R, unsigned short* G, unsigned shor
  */
 void SkyDisplayer::copy_from_16bit(unsigned short* R, unsigned short* G, unsigned short* B)
 {
-	// Jeżeli nie robiliśmy ditheringu, to nie ma po co
 	if( dithering_level < 2 )
 		return;
 
