@@ -506,6 +506,8 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
 	glm::vec3	top_left_corner;
 	glm::vec2	angles_delta;
 	glm::vec2	top_left_angles;
+	glm::vec3	sun_dir;
+	glm::vec3	zenith_dir;
     double  theta;
     double  gamma;
     int     curX;
@@ -518,7 +520,7 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
 	if( perspective_correction )
 		screen_angles( angles_delta, top_left_angles );
 	else
-		screen_vectors( horizontal_step, vertical_step, top_left_corner );
+		screen_vectors( horizontal_step, vertical_step, top_left_corner, sun_dir, zenith_dir );
 
     unsigned int max_loop = max;
     for( unsigned int i = offset; i < max_loop;  ++i )
@@ -531,7 +533,7 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(unsigned int offset, unsigned int ma
 			next_angles( angles_delta, top_left_angles, theta, gamma, curX, curY );
 		else
 			next_angles( horizontal_step, vertical_step,
-						 top_left_corner,
+						 top_left_corner, sun_dir, zenith_dir,
 						 theta, gamma, curX, curY );
 
         R = arhosek_tristim_skymodel_radiance( skymodel_state[0], theta, gamma, 0 );
@@ -573,6 +575,8 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 	glm::vec3	top_left_corner;
 	glm::vec2	angles_delta;
 	glm::vec2	top_left_angles;
+	glm::vec3	sun_dir;
+	glm::vec3	zenith_dir;
 	double  theta;
 	double  gamma;
 	int     curX;
@@ -587,7 +591,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 	if( perspective_correction )
 		screen_angles( angles_delta, top_left_angles );
 	else
-		screen_vectors( horizontal_step, vertical_step, top_left_corner );
+		screen_vectors( horizontal_step, vertical_step, top_left_corner, sun_dir, zenith_dir );
 
 	unsigned int max_loop = max;
 	for( unsigned int i = offset; i < max_loop;  ++i )
@@ -601,7 +605,7 @@ void CompleteSkyModel::generate_sky_spectral( unsigned int offset, unsigned int 
 			next_angles( angles_delta, top_left_angles, theta, gamma, curX, curY );
 		else
 			next_angles( horizontal_step, vertical_step,
-						 top_left_corner,
+						 top_left_corner, sun_dir, zenith_dir,
 						 theta, gamma, curX, curY );
 
 		if( theta <= glm::half_pi<float>() )
