@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     sky_thread.cpp \
     skydisplayer.cpp \
     spectral_to_RGB/SpectralConversion.cpp \
-    SunPosition.cpp
+    SunPosition.cpp \
+    about.cpp
 
 HEADERS  += mainwindow.h \
     HosekWilkie_SkylightModel_C_Source.1.4a/ArHosekSkyModel.h \
@@ -35,7 +36,9 @@ HEADERS  += mainwindow.h \
     skydisplayer.h \
     spectral_to_RGB/CIEXYZ_distribution.h \
     spectral_to_RGB/SpectralConversion.h \
-    SunPosition.h
+    SunPosition.h \
+    about.h
 
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    about.ui

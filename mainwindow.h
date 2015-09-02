@@ -48,6 +48,7 @@ private slots:
 
 	void latitudeChanged( double value );
 	void longitudeChanged( double value );
+	void on_actionO_programie_triggered();
 };
 
 #endif // MAINWINDOW_H

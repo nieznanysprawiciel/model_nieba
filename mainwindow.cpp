@@ -4,6 +4,7 @@
 #include <QDate>
 #include <QDateTime>
 #include <QCalendarWidget>
+#include "about.h"
 
 #include <ctime>
 
@@ -391,3 +392,9 @@ void MainWindow::generation_ended()
     ui->generate->setEnabled(true);
 }
 
+
+void MainWindow::on_actionO_programie_triggered()
+{
+	About aboutDialog( this );
+	aboutDialog.exec();
+}
