@@ -278,6 +278,8 @@ void CompleteSkyModel::clear_HosekWilkie_model()
         arhosekskymodelstate_free( skymodel_state[i] );
 }
 
+/**Wersja jednowątkowa.
+Nieużywane.*/
 void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 {
     vec3    horizontal_step;
@@ -315,9 +317,9 @@ void CompleteSkyModel::generate_sky_RGB_XYZ(/*int offset, int length*/)
 		G = clamp( G, 0.0, 255.0 );
 		B = clamp( B, 0.0, 255.0 );
 // gamma correction przenieść do SkyDisplayer
-		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
-		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
-		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
+//		R = 255 * pow( R / 255.0, 1.0/gamma_correction );
+//		G = 255 * pow( G / 255.0, 1.0/gamma_correction );
+//		B = 255 * pow( B / 255.0, 1.0/gamma_correction );
 
 
         R16_buffer[i] = make_16bit( R );
@@ -370,6 +372,43 @@ void CompleteSkyModel::screen_vectors(vec3 & horizontal_step, vec3 & vertical_st
     //inicjacja zmiennych dla funkcji next_angles
     currentX = 0;
     currentY = 0;
+}
+
+/**oblicza przekztałcone wektory:
+ * - kroku i jeden piksel horyzontalnie
+ * - kroku o jeden piksel pionowo
+ * - lewego górnego rogu ekranu
+ *
+ * Wektory poziomy i pionowy nie są wymnażane przez kwaternion obrotu,
+ * zamiast tego obracany jest układ współrzędnych, tzn. zenit i wektor Słońca.
+ *
+ * funkcja inicjuje dane dla późniejszych wywołań next_angles
+*/
+void CompleteSkyModel::screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
+					vec3 & top_left_corner, vec3& sun_dir, vec3& zenith_dir )
+{
+	horizontal_step = vec3(1,0,0);
+	vertical_step = vec3(0,-1,0);
+
+	//ustalamy długość wektora ekranu na odległóść od bliższej płaszczyzny odcinania
+	top_left_corner = default_direction*(float)screen_near_plane;
+	//tworzymy wektordo lewej górnej części ekranu
+	top_left_corner = top_left_corner
+			- horizontal_step*((float)screenX/2)
+			- vertical_step*((float)screenY/2);
+
+	quat inverse_rotation;
+	inverse_rotation.x = -screen_rotation.x;
+	inverse_rotation.y = -screen_rotation.y;
+	inverse_rotation.z = -screen_rotation.z;
+	inverse_rotation.w = screen_rotation.w;
+
+	sun_dir = inverse_rotation * sun_direction;
+	zenith_dir = inverse_rotation * zenith_direction;
+
+	//inicjacja zmiennych dla funkcji next_angles
+	currentX = 0;
+	currentY = 0;
 }
 
 /**Funkcja oblicza lewy górny róg obrazu we współrzędnych sferycznych
@@ -626,6 +665,36 @@ void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
     ++currentX;
     if(currentX >= screenX)
         currentX = 0, ++currentY;
+}
+
+/**Oblicza kolejne kąty gamma i theta, których wymaga model
+ * funkcja przechowuje wewnątrz aktualny stan, trzeba wywołać funkcję
+ * screen_vectors, która inicjuje ten stan odpowiednimi danymi.
+
+ * Funkcja dostaje w parametrach kierunek Słonca i zenitu przekształcony
+ * transformacją odwrotną do aktualnego kwaternionu obrotu.
+
+ Wersja wielowątkowa.
+ */
+void CompleteSkyModel::next_angles(vec3 & horizontal_step, vec3 & vertical_step,
+				 vec3 & top_left_corner, vec3& sun_dir, vec3& zenith_dir,
+				 double& theta, double& gamma,
+				 int & currentX, int & currentY)
+{
+	vec3    view_direction;
+
+	view_direction = top_left_corner
+			+ (float)currentX*horizontal_step
+			+ (float)currentY*vertical_step;
+
+	view_direction = normalize(view_direction);
+
+	gamma = angle(sun_dir,view_direction);
+	theta = angle(zenith_dir,view_direction);
+
+	++currentX;
+	if(currentX >= screenX)
+		currentX = 0, ++currentY;
 }
 
 

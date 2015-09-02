@@ -99,6 +99,8 @@ private:        //funkcje pomocnicze
 
     void screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
                         vec3 & top_left_corner);
+	void screen_vectors(vec3 & horizontal_step, vec3 & vertical_step,
+					vec3 & top_left_corner, vec3& sun_dir, vec3& zenith_dir );
 	void screen_angles( glm::vec2& delta_angles, glm::vec2& top_left_angles );
     void next_angles(vec3 & horizontal_step, vec3 & vertical_step,
                      vec3 & top_left_corner, double& theta, double& gamma);
@@ -108,6 +110,10 @@ private:        //funkcje pomocnicze
 	void next_angles(	glm::vec2 angle_step, glm::vec2 top_left_corner,
 						double& theta, double& gamma,
 						int & currentX, int & currentY );
+	void next_angles(vec3 & horizontal_step, vec3 & vertical_step,
+				 vec3 & top_left_corner, vec3& sun_dir, vec3& zenith_dir,
+				 double& theta, double& gamma,
+				 int & currentX, int & currentY);
 	unsigned int make_RGB( double& R, double& G, double& B );
 	unsigned short make_16bit( double& color );
 
