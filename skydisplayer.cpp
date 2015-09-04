@@ -322,9 +322,6 @@ void SkyDisplayer::gamma_correction(unsigned short* R, unsigned short* G, unsign
  */
 void SkyDisplayer::copy_from_16bit(unsigned short* R, unsigned short* G, unsigned short* B)
 {
-	if( dithering_level < 2 )
-		return;
-
 	int vert_pix = sky_data.vertical_pixels;
 	int hor_pix = sky_data.horizontal_pixels;
 
